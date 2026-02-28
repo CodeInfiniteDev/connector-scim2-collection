@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +31,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -47,6 +50,7 @@ import net.tirasa.connid.bundles.scim.common.utils.SCIMUtils;
 import net.tirasa.connid.bundles.scim.v11.dto.SCIMv11Attribute;
 import net.tirasa.connid.bundles.scim.v2.dto.SCIMv2Attribute;
 import net.tirasa.connid.bundles.scim.v2.dto.Type;
+import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.configuration.security.ProxyAuthorizationPolicy;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
@@ -116,6 +120,34 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
             policy.setAutoRedirect(true);
             conduit.setClient(policy);
         }
+
+        // SSL temp setting
+        // Add SSL skip logic
+        // Assuming there is a configuration property like 'isSkipTLSVerification'
+        HTTPConduit conduit = WebClient.getConfig(webClient).getHttpConduit();
+        TLSClientParameters tlsParams = conduit.getTlsClientParameters();
+        if (tlsParams == null) {
+            tlsParams = new TLSClientParameters();
+        }
+
+        // Disable CN (Hostname) check
+        tlsParams.setDisableCNCheck(true);
+
+        // Trust all certificates
+        tlsParams.setTrustManagers(new TrustManager[] { new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        } });
+
+        conduit.setTlsClientParameters(tlsParams);
+
+
 
         // include additional api key header if requested by configuration
         if (StringUtil.isNotBlank(config.getAuthHttpHeaderName())) {
