@@ -68,6 +68,7 @@ public class SCIMv11Connector extends AbstractSCIMConnector<
                     configuration.getCustomAttributesJSON(), configuration.getManageComplexEntitlements(),
                     configuration.getUseColonOnExtensionAttributes(), SCIMv11Attribute.class);
         }
+        logSchemaDetails(schema);
         return schema;
     }
 

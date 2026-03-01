@@ -27,6 +27,7 @@ import net.tirasa.connid.bundles.scim.v2.dto.Mutability;
 import net.tirasa.connid.bundles.scim.v2.dto.SCIMv2Attribute;
 import net.tirasa.connid.bundles.scim.v2.dto.SCIMv2EnterpriseUser;
 import org.identityconnectors.common.StringUtil;
+import org.identityconnectors.common.logging.Log;
 import org.identityconnectors.framework.common.objects.Attribute;
 import org.identityconnectors.framework.common.objects.AttributeBuilder;
 import org.identityconnectors.framework.common.objects.AttributeInfoBuilder;
@@ -39,6 +40,8 @@ import org.identityconnectors.framework.common.objects.Schema;
 import org.identityconnectors.framework.common.objects.SchemaBuilder;
 
 public final class SCIMAttributeUtils {
+
+    private static final Log LOG = Log.getLog(SCIMAttributeUtils.class);
 
     public static final String ATTRIBUTE_ID = "id";
 
@@ -335,9 +338,19 @@ public final class SCIMAttributeUtils {
 
         // Group
         ObjectClassInfoBuilder groupBuilder = new ObjectClassInfoBuilder().setType(ObjectClass.GROUP_NAME);
+        LOG.ok("SCHEMA: building GROUP object class");
         groupBuilder.addAttributeInfo(
                 AttributeInfoBuilder.define(SCIMAttributeUtils.SCIM_GROUP_DISPLAY_NAME).setMultiValued(false).build());
-        builder.defineObjectClass(groupBuilder.build());
+        LOG.ok("SCHEMA: adding group attr '{0}' type={1} multi={2} required={3}",
+                SCIMAttributeUtils.SCIM_GROUP_DISPLAY_NAME, String.class.getSimpleName(), false, false);
+        LOG.ok("SCHEMA: members attribute skipped for {0}, reason={1}",
+                ObjectClass.GROUP_NAME, "complex attribute not explicitly defined in static schema");
+        ObjectClassInfo group = groupBuilder.build();
+        LOG.ok("SCHEMA group attrs: {0} membersPresent={1}",
+                group.getAttributeInfo().stream().map(attr -> attr.getName()).collect(java.util.stream.Collectors.toList()),
+                group.getAttributeInfo().stream().anyMatch(attr ->
+                SCIMAttributeUtils.SCIM_GROUP_MEMBERS.equals(attr.getName())));
+        builder.defineObjectClass(group);
 
         return builder.build();
     }

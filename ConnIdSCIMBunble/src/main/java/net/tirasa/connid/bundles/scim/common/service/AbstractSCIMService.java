@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -56,6 +57,7 @@ import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.apache.cxf.transports.http.configuration.ProxyServerType;
+import org.identityconnectors.common.CollectionUtil;
 import org.identityconnectors.common.StringUtil;
 import org.identityconnectors.common.logging.Log;
 import org.identityconnectors.common.security.SecurityUtil;
@@ -77,6 +79,8 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     public static final String RESPONSE_RESOURCES = "Resources";
 
     public static final int MAX_RETRIES = 3;
+
+    private static final int MAX_LOG_BODY_SIZE = 4096;
 
     public AbstractSCIMService(final SCIMConnectorConfiguration config) {
         this.config = config;
@@ -199,12 +203,15 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     }
 
     protected JsonNode doGet(final WebClient webClient) {
-        LOG.ok("GET: {0}", webClient.getCurrentURI());
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "GET";
+        LOG.ok("GET: {0}", uri);
 
         JsonNode result = null;
         try {
-            Response response = executeAndRetry(WebClient::get, webClient, 0);
-            String responseAsString = checkServiceErrors(response);
+            Response response = invokeWithLogging(operationId, method, webClient, null, WebClient::get);
+            String responseAsString = checkServiceErrors(response, operationId, method, uri);
             result = SCIMUtils.MAPPER.readTree(responseAsString);
             if (result == null) {
                 LOG.ok("Empty result from GET request");
@@ -214,6 +221,9 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
                 SCIMUtils.handleGeneralError("Wrong response from GET request: " + responseAsString);
             }
             checkServiceResultErrors(result, response);
+            if (uri.contains("/Groups")) {
+                logGroupJsonFromResponse(result);
+            }
         } catch (IOException ex) {
             LOG.error(ex, "While retrieving data from SCIM API");
         }
@@ -222,7 +232,10 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     }
 
     protected void doCreate(final UT user, final WebClient webClient) {
-        LOG.ok("CREATE: {0}", webClient.getCurrentURI());
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "POST";
+        LOG.ok("CREATE: {0}", uri);
 
         try {
             String payload;
@@ -243,9 +256,9 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
                 // no custom attributes
                 payload = SCIMUtils.MAPPER.writeValueAsString(user);
             }
-            LOG.ok("CREATE payload is {0}: ", payload);
-            Response response = executeAndRetry(wc -> wc.post(payload), webClient, 0);
-            String responseAsString = checkServiceErrors(response);
+            LOG.ok("CREATE payload is {0}: ", sanitizeBody(payload));
+            Response response = invokeWithLogging(operationId, method, webClient, payload, wc -> wc.post(payload));
+            String responseAsString = checkServiceErrors(response, operationId, method, uri);
             String value = SCIMAttributeUtils.ATTRIBUTE_ID;
             JsonNode responseObj = SCIMUtils.MAPPER.readTree(responseAsString);
             if (responseObj.hasNonNull(value)) {
@@ -262,7 +275,10 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     }
 
     protected JsonNode doUpdate(final UT user, final WebClient webClient) {
-        LOG.ok("UPDATE: {0}", webClient.getCurrentURI());
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = config.getUpdateUserMethod().equalsIgnoreCase("PATCH") ? "PATCH" : "PUT";
+        LOG.ok("UPDATE: {0}", uri);
 
         if (config.getUpdateUserMethod().equalsIgnoreCase("PATCH")) {
             WebClient.getConfig(webClient).getRequestContext().put("use.async.http.conduit", true);
@@ -289,16 +305,17 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
                 payload = SCIMUtils.MAPPER.writeValueAsString(user);
             }
 
-            LOG.ok("UPDATE payload is {0}: ", payload);
+            LOG.ok("UPDATE payload is {0}: ", sanitizeBody(payload));
 
             Response response;
             if (config.getUpdateUserMethod().equalsIgnoreCase("PATCH")) {
-                response = executeAndRetry(wc -> wc.invoke("PATCH", payload), webClient, 0);
+                response = invokeWithLogging(operationId, method, webClient, payload,
+                        wc -> wc.invoke("PATCH", payload));
             } else {
-                response = executeAndRetry(wc -> wc.put(payload), webClient, 0);
+                response = invokeWithLogging(operationId, method, webClient, payload, wc -> wc.put(payload));
             }
 
-            String responseAsString = checkServiceErrors(response);
+            String responseAsString = checkServiceErrors(response, operationId, method, uri);
             result = SCIMUtils.MAPPER.readTree(responseAsString);
             checkServiceResultErrors(result, response);
         } catch (IOException ex) {
@@ -315,7 +332,10 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     }
 
     protected JsonNode doUpdatePatch(final P patch, final Set<Attribute> replaceAttributes, final WebClient webClient) {
-        LOG.ok("UPDATE PATCH: {0}", webClient.getCurrentURI());
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "PATCH";
+        LOG.ok("UPDATE PATCH: {0}", uri);
 
         WebClient.getConfig(webClient).getRequestContext().put("use.async.http.conduit", true);
 
@@ -325,10 +345,11 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
             String payload = SCIMUtils.MAPPER.writeValueAsString(
                     patch == null ? buildPatchFromAttrs(replaceAttributes) : patch);
 
-            LOG.ok("UPDATE PATCH payload is {0}: ", payload);
+            LOG.ok("UPDATE PATCH payload is {0}: ", sanitizeBody(payload));
 
-            Response response = executeAndRetry(wc -> webClient.invoke("PATCH", payload), webClient, 0);
-            String responseAsString = checkServiceErrors(response);
+            Response response = invokeWithLogging(operationId, method, webClient, payload,
+                    wc -> webClient.invoke("PATCH", payload));
+            String responseAsString = checkServiceErrors(response, operationId, method, uri);
 
             // some providers, like AWS, return no result, thus a new read is needed
             result = Status.NO_CONTENT.getStatusCode() == response.getStatus()
@@ -346,15 +367,21 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     protected abstract P buildPatchFromAttrs(Set<Attribute> replaceAttributes);
 
     protected void doDeleteUser(final String userId, final WebClient webClient) {
-        LOG.ok("DELETE: {0}", webClient.getCurrentURI());
-        int status = webClient.delete().getStatus();
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "DELETE";
+        LOG.ok("DELETE: {0}", uri);
+        int status = invokeWithLogging(operationId, method, webClient, null, WebClient::delete).getStatus();
         if (status != Status.NO_CONTENT.getStatusCode() && status != Status.OK.getStatusCode()) {
             throw new NoSuchEntityException(userId);
         }
     }
 
     protected void doActivate(final String userId, final WebClient webClient) {
-        LOG.ok("ACTIVATE: {0}", webClient.getCurrentURI());
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "POST";
+        LOG.ok("ACTIVATE: {0}", uri);
 
         try {
             ObjectNode userIdNode = SCIMUtils.MAPPER.createObjectNode();
@@ -362,9 +389,9 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
 
             String payload = SCIMUtils.MAPPER.writeValueAsString(userIdNode);
 
-            LOG.ok("Activate payload is {0}", payload);
+            LOG.ok("Activate payload is {0}", sanitizeBody(payload));
 
-            Response response = executeAndRetry(wc -> wc.post(payload), webClient, 0);
+            Response response = invokeWithLogging(operationId, method, webClient, payload, wc -> wc.post(payload));
             if (response == null) {
                 SCIMUtils.handleGeneralError("While activating User - no response");
             } else {
@@ -376,7 +403,8 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
         }
     }
 
-    protected String checkServiceErrors(final Response response) {
+    protected String checkServiceErrors(
+            final Response response, final String operationId, final String method, final String uri) {
         if (response == null) {
             SCIMUtils.handleGeneralError("While executing request - no response");
         }
@@ -395,6 +423,8 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
         }
 
         if (response.getStatusInfo().getFamily() != Status.Family.SUCCESSFUL) {
+            LOG.error("SCIM {0} {1} {2} -> status={3} body={4}",
+                    operationId, method, uri, response.getStatus(), sanitizeBody(responseAsString));
             SCIMUtils.handleGeneralError(
                     "While executing SCIM request: status is " + response.getStatus() + " and response "
                             + responseAsString);
@@ -767,6 +797,8 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
             SCIMUtils.handleGeneralError("While retrieving Group from service");
         }
 
+        LOG.ok("GROUP MAP IN keys={0}", extractKeys(node));
+
         try {
             group = SCIMUtils.MAPPER.readValue(node.toString(), groupType);
         } catch (IOException ex) {
@@ -775,6 +807,13 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
 
         if (group == null) {
             SCIMUtils.handleGeneralError("While retrieving group from service");
+        } else {
+            LOG.ok("Parsed group id={0} displayName={1} membersCount={2}",
+                    group.getId(), group.getDisplayName(), group.getMembers() == null ? 0 : group.getMembers().size());
+            if (!CollectionUtil.isEmpty(group.getMembers())) {
+                group.getMembers().forEach(member ->
+                        LOG.ok("Parsed group member value={0} $ref={1} type={2}", member.getValue(), member.getRef(), null));
+            }
         }
 
         return group;
@@ -837,6 +876,9 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
 
         if (pagedResults == null) {
             SCIMUtils.handleGeneralError("While retrieving Groups from service");
+        } else {
+            pagedResults.getResources().forEach(group -> LOG.ok("Parsed group id={0} displayName={1} membersCount={2}",
+                    group.getId(), group.getDisplayName(), group.getMembers() == null ? 0 : group.getMembers().size()));
         }
 
         return pagedResults;
@@ -874,16 +916,19 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     }
 
     protected void doCreate(final GT group, final WebClient webClient) {
-        LOG.ok("CREATE: {0}", webClient.getCurrentURI());
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "POST";
+        LOG.ok("CREATE: {0}", uri);
 
         try {
             String payload = SCIMUtils.MAPPER.writeValueAsString(group);
 
-            LOG.ok("CREATE payload is {0}: ", payload);
+            LOG.ok("CREATE payload is {0}: ", sanitizeBody(payload));
 
-            Response response = executeAndRetry(wc -> wc.post(payload), webClient, 0);
+            Response response = invokeWithLogging(operationId, method, webClient, payload, wc -> wc.post(payload));
 
-            String responseAsString = checkServiceErrors(response);
+            String responseAsString = checkServiceErrors(response, operationId, method, uri);
             String value = SCIMAttributeUtils.ATTRIBUTE_ID;
             JsonNode responseObj = SCIMUtils.MAPPER.readTree(responseAsString);
             if (responseObj.hasNonNull(value)) {
@@ -933,7 +978,10 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     }
 
     protected JsonNode doUpdate(final GT group, final WebClient webClient) {
-        LOG.ok("UPDATE: {0}", webClient.getCurrentURI());
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "PUT";
+        LOG.ok("UPDATE: {0}", uri);
         JsonNode result = null;
         Response response;
         String payload;
@@ -942,11 +990,11 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
             // this is only for update through PUT method
             payload = SCIMUtils.MAPPER.writeValueAsString(group);
 
-            LOG.ok("UPDATE payload is {0}: ", payload);
+            LOG.ok("UPDATE payload is {0}: ", sanitizeBody(payload));
 
-            response = executeAndRetry(wc -> wc.put(payload), webClient, 0);
+            response = invokeWithLogging(operationId, method, webClient, payload, wc -> wc.put(payload));
 
-            String responseEntity = checkServiceErrors(response);
+            String responseEntity = checkServiceErrors(response, operationId, method, uri);
             // some servers like Salesforce return empty response on group update with PUT, thus  a re-read is needed
             result = StringUtil.isNotBlank(responseEntity) ? SCIMUtils.MAPPER.readTree(responseEntity)
                     : doGet(getWebclient("Groups", null).path(
@@ -961,11 +1009,114 @@ public abstract class AbstractSCIMService<UT extends SCIMUser<
     }
 
     protected void doDeleteGroup(final String groupId, final WebClient webClient) {
-        LOG.ok("DELETE Group: {0}", webClient.getCurrentURI());
-        int status = executeAndRetry(WebClient::delete, webClient, 0).getStatus();
+        String operationId = UUID.randomUUID().toString();
+        String uri = String.valueOf(webClient.getCurrentURI());
+        String method = "DELETE";
+        LOG.ok("DELETE Group: {0}", uri);
+        int status = invokeWithLogging(operationId, method, webClient, null, WebClient::delete).getStatus();
         if (status != Status.NO_CONTENT.getStatusCode() && status != Status.OK.getStatusCode()) {
             throw new NoSuchEntityException(groupId);
         }
+    }
+
+    protected Response invokeWithLogging(
+            final String operationId,
+            final String method,
+            final WebClient webClient,
+            final String payload,
+            final Function<WebClient, Response> action) {
+
+        String uri = String.valueOf(webClient.getCurrentURI());
+        LOG.ok("SCIM REQ {0} {1} {2} headers={3} body={4}",
+                operationId, method, uri, sanitizeHeaders(webClient.getHeaders()),
+                payload == null ? null : sanitizeBody(payload));
+        try {
+            Response response = executeAndRetry(action, webClient, 0);
+            if (response != null) {
+                response.bufferEntity();
+                String body = response.hasEntity() ? response.readEntity(String.class) : StringUtil.EMPTY;
+                LOG.ok("SCIM RESP {0} {1} {2} -> status={3} headers={4} body={5}",
+                        operationId, method, uri, response.getStatus(),
+                        sanitizeHeaders(response.getStringHeaders()),
+                        sanitizeBody(body));
+            }
+            return response;
+        } catch (Exception e) {
+            LOG.error(e, "SCIM {0} {1} {2} failed", operationId, method, uri);
+            throw e;
+        }
+    }
+
+    protected Map<String, List<String>> sanitizeHeaders(final Map<String, List<String>> headers) {
+        Map<String, List<String>> sanitized = new HashMap<>();
+        if (headers == null) {
+            return sanitized;
+        }
+        headers.forEach((headerName, values) -> {
+            String key = headerName == null ? StringUtil.EMPTY : headerName;
+            if ("authorization".equalsIgnoreCase(key) || "cookie".equalsIgnoreCase(key)
+                    || "set-cookie".equalsIgnoreCase(key) || key.toLowerCase().contains("token")) {
+                sanitized.put(key, Collections.singletonList("***"));
+            } else {
+                sanitized.put(key, values);
+            }
+        });
+        return sanitized;
+    }
+
+    protected String sanitizeBody(final String payload) {
+        if (StringUtil.isBlank(payload)) {
+            return payload;
+        }
+
+        String sanitized = payload
+                .replaceAll("(?i)(\"password\"\\s*:\\s*\")[^\"]*(\")", "$1***$2")
+                .replaceAll("(?i)(\"token\"\\s*:\\s*\")[^\"]*(\")", "$1***$2")
+                .replaceAll("(?i)(\"access_token\"\\s*:\\s*\")[^\"]*(\")", "$1***$2")
+                .replaceAll("(?i)(\"refresh_token\"\\s*:\\s*\")[^\"]*(\")", "$1***$2")
+                .replaceAll("(?i)(\"client_secret\"\\s*:\\s*\")[^\"]*(\")", "$1***$2")
+                .replaceAll("(?i)(Bearer\\s+)[^\\s\"]+", "$1***");
+        if (sanitized.length() > MAX_LOG_BODY_SIZE) {
+            return sanitized.substring(0, MAX_LOG_BODY_SIZE)
+                    + "...(truncated," + sanitized.length() + " chars)";
+        }
+        return sanitized;
+    }
+
+    protected void logGroupJsonFromResponse(final JsonNode node) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.isObject() && node.has(RESPONSE_RESOURCES) && node.get(RESPONSE_RESOURCES).isArray()) {
+            node.get(RESPONSE_RESOURCES).forEach(this::logGroupJsonNode);
+        } else if (node.isObject() && node.has(SCIMAttributeUtils.SCIM_GROUP_DISPLAY_NAME)) {
+            logGroupJsonNode(node);
+        }
+    }
+
+    protected void logGroupJsonNode(final JsonNode groupNode) {
+        LOG.ok("GROUP MAP IN keys={0}", extractKeys(groupNode));
+        JsonNode members = groupNode.get(SCIMAttributeUtils.SCIM_GROUP_MEMBERS);
+        int membersCount = members != null && members.isArray() ? members.size() : 0;
+        LOG.ok("Parsed group id={0} displayName={1} membersCount={2}",
+                groupNode.path(SCIMAttributeUtils.ATTRIBUTE_ID).asText(null),
+                groupNode.path(SCIMAttributeUtils.SCIM_GROUP_DISPLAY_NAME).asText(null),
+                membersCount);
+        if (members != null && members.isArray()) {
+            members.forEach(member -> LOG.ok("Parsed group member value={0} $ref={1} type={2}",
+                    member.path("value").asText(null),
+                    member.path("$ref").asText(null),
+                    member.path("type").asText(null)));
+        }
+    }
+
+    protected List<String> extractKeys(final JsonNode node) {
+        List<String> keys = new ArrayList<>();
+        if (node != null && node.isObject()) {
+            node.fieldNames().forEachRemaining(keys::add);
+        }
+        return keys;
     }
 
     protected Response executeAndRetry(

@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import net.tirasa.connid.bundles.scim.common.dto.BaseResourceReference;
 import net.tirasa.connid.bundles.scim.common.dto.PagedResults;
@@ -63,9 +64,11 @@ import org.identityconnectors.framework.common.objects.ConnectorObject;
 import org.identityconnectors.framework.common.objects.ConnectorObjectBuilder;
 import org.identityconnectors.framework.common.objects.Name;
 import org.identityconnectors.framework.common.objects.ObjectClass;
+import org.identityconnectors.framework.common.objects.ObjectClassInfo;
 import org.identityconnectors.framework.common.objects.OperationOptions;
 import org.identityconnectors.framework.common.objects.OperationalAttributes;
 import org.identityconnectors.framework.common.objects.ResultsHandler;
+import org.identityconnectors.framework.common.objects.Schema;
 import org.identityconnectors.framework.common.objects.SearchResult;
 import org.identityconnectors.framework.common.objects.Uid;
 import org.identityconnectors.framework.common.objects.filter.EqualsFilter;
@@ -90,6 +93,8 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
         implements Connector, CreateOp, DeleteOp, SchemaOp, SearchOp<Filter>, TestOp, UpdateOp, UpdateDeltaOp {
 
     protected static final Log LOG = Log.getLog(AbstractSCIMConnector.class);
+
+    private static final AtomicBoolean MEMBERS_MAPPING_IGNORED_LOGGED = new AtomicBoolean(false);
 
     protected SCIMConnectorConfiguration configuration;
 
@@ -471,6 +476,8 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
                             groups.stream().filter(g -> !currentGroups.contains(g)).collect(Collectors.toList());
                     List<String> groupsToRemove =
                             currentGroups.stream().filter(g -> !groups.contains(g)).collect(Collectors.toList());
+                    LOG.ok("Incoming account group delta id={0} groupsToAdd={1} groupsToRemove={2}",
+                            user.getId(), groupsToAdd, groupsToRemove);
                     fillGroupPatches(user, groupPatches, groupsToAdd, groupsToRemove);
                 } else {
                     List<String> groups = accessor.findStringList(SCIMAttributeUtils.SCIM_USER_GROUPS);
@@ -506,8 +513,11 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
 
                 client.updateUser(user);
                 // if PATCH is enabled update also group with memberships previously calculated
-                groupPatches.entrySet()
-                        .forEach(patchEntry -> client.updateGroup(patchEntry.getKey(), patchEntry.getValue()));
+                groupPatches.forEach((groupId, patch) -> {
+                    LOG.ok("Applying group membership patch id={0} ops={1}",
+                            groupId, safePatchPayload(patch));
+                    client.updateGroup(groupId, patch);
+                });
 
                 returnUid = new Uid(user.getId());
             } catch (Exception e) {
@@ -524,10 +534,15 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
             group.setId(uid.getUidValue());
             group.setDisplayName(displayName);
             try {
+                LOG.ok("Incoming group update attrs id={0} attrs={1}",
+                        uid.getUidValue(), replaceAttributes);
                 group.fromAttributes(replaceAttributes, configuration.getReplaceMembersOnUpdate());
 
                 if ("PATCH".equals(configuration.getUpdateGroupMethod())) {
-                    client.updateGroup(uid.getUidValue(), buildPatchFromGroup(group));
+                    P groupPatch = buildPatchFromGroup(group);
+                    LOG.ok("Applying group membership patch id={0} ops={1}",
+                            uid.getUidValue(), safePatchPayload(groupPatch));
+                    client.updateGroup(uid.getUidValue(), groupPatch);
 
                     if (configuration.getReplaceMembersOnUpdate()) {
                         // replace all members of the group on update
@@ -544,9 +559,12 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
                                     .map(client::getUser)
                                     .filter(Objects::nonNull)
                                     .collect(Collectors.toList());
+                            P membersPatch = buildMembersGroupPatch(scimUsers, SCIMAttributeUtils.SCIM_ADD);
+                            LOG.ok("Applying group membership patch id={0} ops={1}",
+                                    group.getId(), safePatchPayload(membersPatch));
                             client.updateGroup(
                                     group.getId(),
-                                    buildMembersGroupPatch(scimUsers, SCIMAttributeUtils.SCIM_ADD));
+                                    membersPatch);
                         }
                     }
                 } else {
@@ -620,8 +638,13 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
             }
         } else if (ObjectClass.GROUP.equals(objectClass)) {
             try {
+                LOG.ok("Incoming group delta id={0} deltas={1}",
+                        uid.getUidValue(), summarizeAttributeDeltas(modifications));
                 if ("PATCH".equals(configuration.getUpdateGroupMethod())) {
-                    client.updateGroup(uid.getUidValue(), buildGroupPatch(modifications));
+                    P groupPatch = buildGroupPatch(modifications);
+                    LOG.ok("Applying group membership patch id={0} ops={1}",
+                            uid.getUidValue(), safePatchPayload(groupPatch));
+                    client.updateGroup(uid.getUidValue(), groupPatch);
                 } else {
                     LOG.warn("Group update method must be set to PATCH while updating through UPDATE_DELTA");
                 }
@@ -728,7 +751,25 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
         builder.setName(group.getDisplayName());
 
         try {
-            for (Attribute toAttribute : group.toAttributes(group.getClass(), configuration)) {
+            Set<Attribute> mappedAttributes = group.toAttributes(group.getClass(), configuration);
+            LOG.ok("Parsed group id={0} displayName={1} membersCount={2}",
+                    group.getId(),
+                    group.getDisplayName(),
+                    group.getMembers() == null ? 0 : group.getMembers().size());
+            if (!CollectionUtil.isEmpty(group.getMembers())) {
+                group.getMembers().forEach(member -> LOG.ok("Parsed group member value={0} $ref={1} type={2}",
+                        member.getValue(), member.getRef(), null));
+            }
+            LOG.ok("GROUP MAP OUT: attrs={0}",
+                    mappedAttributes.stream().map(Attribute::getName).collect(Collectors.toList()));
+            if (!CollectionUtil.isEmpty(group.getMembers())
+                    && mappedAttributes.stream().noneMatch(attr ->
+                    SCIMAttributeUtils.SCIM_GROUP_MEMBERS.equals(attr.getName()))
+                    && MEMBERS_MAPPING_IGNORED_LOGGED.compareAndSet(false, true)) {
+                LOG.warn("Group parser ignored '{0}' while mapping SCIM group to ConnId attributes",
+                        SCIMAttributeUtils.SCIM_GROUP_MEMBERS);
+            }
+            for (Attribute toAttribute : mappedAttributes) {
                 String attributeName = toAttribute.getName();
                 for (String attributeToGetName : attributesToGet) {
                     if (attributeName.equals(attributeToGetName)) {
@@ -747,6 +788,58 @@ public abstract class AbstractSCIMConnector<UT extends SCIMUser<? extends SCIMBa
     @Override
     public Configuration getConfiguration() {
         return configuration;
+    }
+
+    protected void logSchemaDetails(final Schema schema) {
+        if (schema == null) {
+            return;
+        }
+
+        for (ObjectClassInfo objectClassInfo : schema.getObjectClassInfo()) {
+            List<String> attrs = objectClassInfo.getAttributeInfo().stream()
+                    .map(attr -> attr.getName())
+                    .collect(Collectors.toList());
+            boolean membersPresent = objectClassInfo.getAttributeInfo().stream()
+                    .anyMatch(attr -> SCIMAttributeUtils.SCIM_GROUP_MEMBERS.equals(attr.getName()));
+            LOG.ok("SCHEMA objectClass={0} attrs={1} membersPresent={2}",
+                    objectClassInfo.getType(), attrs, membersPresent);
+            objectClassInfo.getAttributeInfo().forEach(attrInfo -> LOG.ok(
+                    "SCHEMA attr objectClass={0} name={1} type={2} multi={3} required={4} createable={5} "
+                    + "updateable={6} readable={7}",
+                    objectClassInfo.getType(),
+                    attrInfo.getName(),
+                    attrInfo.getType() == null ? null : attrInfo.getType().getSimpleName(),
+                    attrInfo.isMultiValued(),
+                    attrInfo.isRequired(),
+                    attrInfo.isCreateable(),
+                    attrInfo.isUpdateable(),
+                    attrInfo.isReadable()));
+            if (ObjectClass.GROUP_NAME.equals(objectClassInfo.getType()) && !membersPresent) {
+                LOG.ok("SCHEMA members attribute skipped for {0}",
+                        ObjectClass.GROUP_NAME);
+            }
+        }
+    }
+
+    protected String safePatchPayload(final P patch) {
+        if (patch == null) {
+            return null;
+        }
+        try {
+            return SCIMUtils.MAPPER.writeValueAsString(patch);
+        } catch (Exception e) {
+            LOG.warn(e, "Unable to serialize patch for trace logging");
+            return patch.toString();
+        }
+    }
+
+    protected String summarizeAttributeDeltas(final Set<AttributeDelta> modifications) {
+        if (CollectionUtil.isEmpty(modifications)) {
+            return "[]";
+        }
+        return modifications.stream().map(mod -> mod.getName() + "{add=" + mod.getValuesToAdd()
+                + ", remove=" + mod.getValuesToRemove() + ", replace=" + mod.getValuesToReplace() + "}")
+                .collect(Collectors.joining(", ", "[", "]"));
     }
 
     protected abstract <T extends SCIMBaseAttribute<T>> UT buildNewUserEntity(Optional<SCIMSchema<T>> customSchema);
