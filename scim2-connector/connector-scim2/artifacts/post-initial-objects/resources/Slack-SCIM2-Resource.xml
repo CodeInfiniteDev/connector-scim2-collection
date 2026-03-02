@@ -1,0 +1,340 @@
+<resource xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="805bb264-8a18-4a3e-ac17-0576ef458e63">
+    <name>Slack (SCIM2)</name>
+    <connectorRef relation="org:default" type="c:ConnectorType">
+        <!-- ConnId com.exclamationlabs.connid.base.scim2.Scim2Connector v1.2.5 -->
+        <filter>
+            <q:text>connectorType = 'com.exclamationlabs.connid.base.scim2.Scim2Connector' and connectorVersion = '1.2.5'</q:text>
+        </filter>
+    </connectorRef>
+    <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+        <icfc:configurationProperties xmlns:gen749="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/connector-scim2/com.exclamationlabs.connid.base.scim2.Scim2Connector">
+            <gen749:ioErrorRetries>1</gen749:ioErrorRetries>
+            <gen749:deepGet>false</gen749:deepGet>
+            <gen749:deepImport>false</gen749:deepImport>
+            <gen749:importBatchSize>10</gen749:importBatchSize>
+            <gen749:pagination>true</gen749:pagination>
+            <gen749:serviceUrl xmlns="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/connector-scim2/com.exclamationlabs.connid.base.scim2.Scim2Connector" xmlns:s="http://midpoint.evolveum.com/xml/ns/public/model/scripting-3">https://api.slack.com/scim/v2</gen749:serviceUrl>
+            <gen749:duplicateErrorReturnsId>true</gen749:duplicateErrorReturnsId>
+            <gen749:token>SlackSCIM2APIToken</gen749:token>
+            <gen749:groupsEndpointUrl>/Groups</gen749:groupsEndpointUrl>
+            <gen749:enableEnterpriseUser>false</gen749:enableEnterpriseUser>
+            <gen749:enableSlackSchema>true</gen749:enableSlackSchema>
+            <gen749:usersEndpointUrl>/Users</gen749:usersEndpointUrl>
+            <gen749:userSchemaIdList xmlns="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/connector-scim2/com.exclamationlabs.connid.base.scim2.Scim2Connector" xmlns:s="http://midpoint.evolveum.com/xml/ns/public/model/scripting-3" xmlns:se="http://midpoint.evolveum.com/xml/ns/public/model/scripting/extension-3">"[urn:ietf:params:scim:schemas:extension:enterprise:2.0:User, urn:ietf:params:scim:schemas:extension:slack:guest:2.0:User]"</gen749:userSchemaIdList>
+        </icfc:configurationProperties>
+    </connectorConfiguration>
+    <schemaHandling>
+        <objectType id="4">
+            <kind>account</kind>
+            <displayName>Slack Users</displayName>
+            <default>true</default>
+            <delineation>
+                <objectClass>ri:Scim2User</objectClass>
+            </delineation>
+            <focus>
+                <type>c:UserType</type>
+                <archetypeRef oid="00000000-0000-0000-0000-000000000702" relation="org:default" type="c:ArchetypeType"/>
+            </focus>
+            <attribute id="26">
+                <ref>ri:emails</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <expression>
+                        <script>
+                            <code>
+                                valueMap = new HashMap()
+                                jsonMap = [:]
+
+                                jsonMap.put("value", focus.emailAddress)
+                                jsonMap.put("primary", true)
+
+                                valueMap.put("map", jsonMap)
+                                return provision.execute("jsonComposer", valueMap)
+                            </code>
+                        </script>
+                    </expression>
+                </outbound>
+                <inbound id="27">
+                    <strength>strong</strength>
+                    <expression>
+                        <script>
+                            <code>
+                              valueMap = new HashMap()
+                              valueMap.put("response", input)
+                              valueMap.put("primary", "true")
+                              valueMap.put("type", "")
+                              valueMap.put("group", false)
+                              value = provision.execute("jsonParser", valueMap)
+                              
+                              return value
+                           </code>
+                        </script>
+                    </expression>
+                    <target>
+                        <path>emailAddress</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="29">
+                <ref>ri:phoneNumbers</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/telephoneNumber</path>
+                    </source>
+                    <source>
+                        <path>$focus/personalNumber</path>
+                    </source>
+                    <expression>
+                        <script>
+                            <code>
+                                if(!telephoneNumber &amp;&amp; !personalNumber){
+                                    return
+                                }
+
+                                valueMap = new HashMap()
+                                jsonMap = [:]
+
+                                if(telephoneNumber){
+                                    jsonMap.put("value", telephoneNumber)
+                                    jsonMap.put("primary", true)
+                                }
+                                if(personalNumber){
+                                    jsonMap.put("value", personalNumber)
+                                    jsonMap.put("type", "mobile")
+                                    jsonMap.put("primary", false)
+                                }
+
+                                valueMap.put("map", jsonMap)
+                                return provision.execute("jsonComposer", valueMap)
+                            </code>
+                        </script>
+                    </expression>
+                </outbound>
+                <inbound id="30">
+                    <strength>strong</strength>
+                    <expression>
+                        <script>
+                            <code>
+                                valueMap = new HashMap()
+                                valueMap.put("response", input)
+                                valueMap.put("primary", "false")
+                                valueMap.put("type", "mobile")
+                                valueMap.put("group", false)
+                                value = provision.execute("jsonParser", valueMap)
+
+                                return value
+                            </code>
+                        </script>
+                    </expression>
+                    <target>
+                        <path>personalNumber</path>
+                    </target>
+                </inbound>
+                <inbound id="31">
+                    <strength>strong</strength>
+                    <expression>
+                        <script>
+                            <code>
+                                valueMap = new HashMap()
+                                valueMap.put("response", input)
+                                valueMap.put("primary", "true")
+                                valueMap.put("type", "")
+                                valueMap.put("group", false)
+                                value = provision.execute("jsonParser", valueMap)
+
+                                return value
+                            </code>
+                        </script>
+                    </expression>
+                    <target>
+                        <path>telephoneNumber</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="37">
+                <ref>ri:userName</ref>
+                <outbound id="38">
+                    <source>
+                        <path>name</path>
+                    </source>
+                </outbound>
+                <inbound id="38">
+                    <target>
+                        <path>name</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="39">
+                <ref>ri:name_familyName</ref>
+                <inbound id="87">
+                    <target>
+                        <path>familyName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="41">
+                <ref>ri:name_givenName</ref>
+                <inbound id="88">
+                    <target>
+                        <path>givenName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="62">
+                <ref>ri:name_honorificPrefix</ref>
+                <inbound id="89">
+                    <target>
+                        <path>honorificPrefix</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="45">
+                <ref>ri:title</ref>
+                <inbound id="90">
+                    <target>
+                        <path>title</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute>
+                <ref>ri:groups</ref>
+                <inbound>
+                    <expression>
+                        <assignmentTargetSearch>
+                            <targetType>RoleType</targetType>
+                            <filter>
+                                <q:equal>
+                                    <q:path>identifier</q:path>
+                                    <expression>
+                                        <script>
+                                            <code>
+                                                valueMap = new HashMap()
+                                                valueMap.put("response", input)
+                                                valueMap.put("primary", "false")
+                                                valueMap.put("type", "")
+                                                valueMap.put("group", true)
+                                                value = provision.execute("jsonParser", valueMap)
+
+                                                return value
+                                            </code>
+                                        </script>
+                                    </expression>
+                                </q:equal>
+                            </filter>
+                        </assignmentTargetSearch>
+                    </expression>
+                    <target>
+                        <path>assignment</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <activation>
+                <existence>
+                    <outbound id="85">
+                        <strength>weak</strength>
+                        <expression>
+                            <path>$focusExists</path>
+                        </expression>
+                    </outbound>
+                </existence>
+                <administrativeStatus>
+                    <outbound id="86">
+                        <strength>strong</strength>
+                        <source>
+                            <path>activation/effectiveStatus</path>
+                        </source>
+                    </outbound>
+                </administrativeStatus>
+            </activation>
+            <correlation>
+                <correlators>
+                    <items id="91">
+                        <name>name</name>
+                        <item id="92">
+                            <ref>name</ref>
+                        </item>
+                        <composition>
+                            <weight>1.0</weight>
+                        </composition>
+                    </items>
+                </correlators>
+            </correlation>
+            <synchronization>
+                <reaction id="8">
+                    <situation>unlinked</situation>
+                    <actions>
+                        <link id="10"/>
+                    </actions>
+                </reaction>
+                <reaction id="9">
+                    <situation>linked</situation>
+                    <actions>
+                        <synchronize id="11">
+                            <synchronize>true</synchronize>
+                        </synchronize>
+                    </actions>
+                </reaction>
+                <reaction id="34">
+                    <situation>unmatched</situation>
+                    <actions>
+                        <addFocus id="35"/>
+                    </actions>
+                </reaction>
+            </synchronization>
+        </objectType>
+        <objectType id="94">
+            <kind>entitlement</kind>
+            <intent>groups</intent>
+            <displayName>Slack Groups</displayName>
+            <default>true</default>
+            <delineation>
+                <objectClass>ri:Scim2Group</objectClass>
+            </delineation>
+            <focus>
+                <type>c:RoleType</type>
+                <archetypeRef oid="00000000-0000-0000-0000-000000000328" relation="org:default" type="c:ArchetypeType"/>
+            </focus>
+            <attribute id="96">
+                <ref>ri:displayName</ref>
+                <inbound id="97">
+                    <strength>strong</strength>
+                    <target>
+                        <path>name</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="99">
+                <ref>ri:id</ref>
+                <inbound id="100">
+                    <strength>strong</strength>
+                    <target>
+                        <path>identifier</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <synchronization>
+                <reaction id="8">
+                    <situation>unlinked</situation>
+                    <actions>
+                        <link id="10"/>
+                    </actions>
+                </reaction>
+                <reaction id="9">
+                    <situation>linked</situation>
+                    <actions>
+                        <synchronize id="11">
+                            <synchronize>true</synchronize>
+                        </synchronize>
+                    </actions>
+                </reaction>
+                <reaction id="34">
+                    <situation>unmatched</situation>
+                    <actions>
+                        <addFocus id="35"/>
+                    </actions>
+                </reaction>
+            </synchronization>
+        </objectType>
+    </schemaHandling>
+</resource>

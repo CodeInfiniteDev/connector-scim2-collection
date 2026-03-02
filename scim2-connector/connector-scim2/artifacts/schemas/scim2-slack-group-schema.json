@@ -1,0 +1,69 @@
+{
+  "id": "urn:ietf:params:scim:schemas:core:2.0:Group",
+  "name": "Group",
+  "description": "Core Group",
+  "attributes": [
+    {
+      "name": "id",
+      "type": "string",
+      "multiValued": false,
+      "description": "Unique identifier for the SCIM resource as defined by the Service Provider. Each representation of the resource MUST include a non-empty id value. This identifier MUST be unique across the Service Provider’s entire set of resources. It MUST be a stable, non-reassignable identifier that does not change when the same resource is returned in subsequent requests. The value of the id attribute is always issued by the Service Provider and MUST never be specified by the Service Consumer. REQUIRED.",
+      "mutability": "readOnly",
+      "returned": "always",
+      "uniqueness": "global",
+      "required": true,
+      "caseExact": false
+    },
+    {
+      "name": "displayName",
+      "type": "string",
+      "multiValued": false,
+      "description": "A human readable name for the Group. REQUIRED.",
+      "mutability": "readWrite",
+      "returned": "always",
+      "uniqueness": "server",
+      "required": true,
+      "caseExact": false
+    },
+    {
+      "name": "members",
+      "type": "complex",
+      "multiValued": true,
+      "multiValuedAttributeChildName": "member",
+      "description": "A list of members of the Group. Canonical Type \"User\" is currently supported and READ-ONLY. The value must be the \"id\" of a SCIM User resource.",
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": true,
+      "caseExact": false,
+      "subAttributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "multiValued": false,
+          "description": "The \"id\" of a SCIM User resource. REQUIRED.",
+          "mutability": "immutable",
+          "returned": "default",
+          "uniqueness": "none",
+          "required": true,
+          "caseExact": false
+        },
+        {
+          "name": "display",
+          "type": "string",
+          "multiValued": false,
+          "description": "A human readable name for the member, primarily used for display purposes. READ-ONLY.",
+          "mutability": "immutable",
+          "returned": "default",
+          "uniqueness": "none",
+          "required": false,
+          "caseExact": false
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "resourceType": "schema",
+    "location": "/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Group"
+  }
+}

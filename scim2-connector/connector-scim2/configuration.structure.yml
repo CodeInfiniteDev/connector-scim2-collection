@@ -1,0 +1,69 @@
+---
+name: 'Scim2'
+configurationClass:
+  name: 'Scim2Configuration'
+  package: 'com.exclamationlabs.connid.base.scim2.configuration'
+rest: true # io-error-retries
+service: true # service-url
+results: true
+security:
+  authenticator:
+    directAccessToken: true
+custom:
+  items:
+    required:
+      enableStandardSchema:
+        type: boolean
+        default: 'false'
+        order: 3010
+        display: 'Enable Standard Schema'
+        help: 'Uses prebuilt java objects based on the stand schema. '
+      enableEnterpriseUser:
+        type: boolean
+        default: 'false'
+        order: 3020
+        display: 'Enable Enterprise User'
+        help: 'Extend the user schema with enterprise attributes '
+      enableAWSSchema:
+        type: boolean
+        default: 'false'
+        order: 3030
+        display: 'Enable AWS Schema'
+        help: 'Use a pre-built java objects as defined for AWS As specified here https://docs.aws.amazon.com/singlesignon/latest/developerguide/what-is-scim.html'
+      enableSlackSchema:
+        type: boolean
+        default: 'false'
+        order: 3040
+        display: 'Enable Slack Schema'
+        help: 'Use prebuilt java classes as define for Slack as specified here: https://api.slack.com/admins/scim2'
+      enableDynamicSchema:
+        type: boolean
+        default: 'false'
+        order: 3050
+        display: 'Enable Dynamic Schema'
+        help: 'Use the Resource Type and/or the Schema defined '
+      usersEndpointUrl:
+        type: string
+        default: '/Users'
+        order: 3060
+        display: 'Users Endpoint URL'
+        help: 'Discovered from the resource type or entered manually'
+      groupsEndpointUrl:
+        type: string
+        default: '/Groups'
+        order: 3070
+        display: 'Groups Endpoint URL'
+        help: 'Discovered from the resource type or entered manually'
+    optional:
+      userSchemaIdList:
+        type: string_array
+        order: 3100
+        multiValued: true
+        display: 'User SchemaId List'
+        help: 'A list of user schemas that define a user. This is discoverable from the Resource Type URL, JSON, or by one of the prebuilt java classes'
+      groupSchemaIdList:
+        type: string_array
+        order: 3200
+        multiValued: true
+        display: 'Group SchemaId List'
+        help: 'A list of Group schemas that define a Group. This is discoverable from the Resource Type URL or JSON. or by one of the prebuilt java classes '

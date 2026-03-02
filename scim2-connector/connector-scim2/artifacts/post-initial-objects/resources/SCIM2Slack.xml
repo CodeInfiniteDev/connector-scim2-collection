@@ -1,0 +1,1036 @@
+<resource xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="1f5c6080-f762-4c5d-8249-bc8f24258e1a" version="80" >
+    <name>SCIM2 Slack</name>
+    <metadata>
+        <requestTimestamp>2024-08-24T17:47:59.951-04:00</requestTimestamp>
+        <requestorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <createTimestamp>2024-08-24T17:48:00.051-04:00</createTimestamp>
+        <creatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <createChannel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</createChannel>
+        <modifyTimestamp>2024-09-20T08:53:30.556-04:00</modifyTimestamp>
+        <modifierRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <modifyChannel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</modifyChannel>
+    </metadata>
+    <lifecycleState>active</lifecycleState>
+    <operationExecution id="57">
+        <recordType>simple</recordType>
+        <timestamp>2024-09-18T13:33:06.374-04:00</timestamp>
+        <operation>
+            <objectDelta>
+                <t:changeType>modify</t:changeType>
+                <t:objectType>c:ResourceType</t:objectType>
+            </objectDelta>
+            <executionResult>
+                <operation>com.evolveum.midpoint.model.impl.lens.ChangeExecutor.executeDelta</operation>
+                <status>success</status>
+                <importance>normal</importance>
+                <token>1000000000000017077</token>
+            </executionResult>
+            <objectName>SCIM2 Slack</objectName>
+        </operation>
+        <status>success</status>
+        <initiatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <channel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channel>
+    </operationExecution>
+    <operationExecution id="61">
+        <recordType>simple</recordType>
+        <timestamp>2024-09-18T13:46:12.784-04:00</timestamp>
+        <operation>
+            <objectDelta>
+                <t:changeType>modify</t:changeType>
+                <t:objectType>c:ResourceType</t:objectType>
+            </objectDelta>
+            <executionResult>
+                <operation>com.evolveum.midpoint.model.impl.lens.ChangeExecutor.executeDelta</operation>
+                <status>success</status>
+                <importance>normal</importance>
+                <token>1000000000000017686</token>
+            </executionResult>
+            <objectName>SCIM2 Slack</objectName>
+        </operation>
+        <status>success</status>
+        <initiatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <channel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channel>
+    </operationExecution>
+    <operationExecution id="62">
+        <recordType>simple</recordType>
+        <timestamp>2024-09-18T13:59:16.311-04:00</timestamp>
+        <operation>
+            <objectDelta>
+                <t:changeType>modify</t:changeType>
+                <t:objectType>c:ResourceType</t:objectType>
+            </objectDelta>
+            <executionResult>
+                <operation>com.evolveum.midpoint.model.impl.lens.ChangeExecutor.executeDelta</operation>
+                <status>success</status>
+                <importance>normal</importance>
+                <token>1000000000000018885</token>
+            </executionResult>
+            <objectName>SCIM2 Slack</objectName>
+        </operation>
+        <status>success</status>
+        <initiatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <channel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channel>
+    </operationExecution>
+    <operationExecution id="67">
+        <recordType>simple</recordType>
+        <timestamp>2024-09-20T08:44:47.329-04:00</timestamp>
+        <operation>
+            <objectDelta>
+                <t:changeType>modify</t:changeType>
+                <t:objectType>c:ResourceType</t:objectType>
+            </objectDelta>
+            <executionResult>
+                <operation>com.evolveum.midpoint.model.impl.lens.ChangeExecutor.executeDelta</operation>
+                <status>success</status>
+                <importance>normal</importance>
+                <token>1000000000000001146</token>
+            </executionResult>
+            <objectName>SCIM2 Slack</objectName>
+        </operation>
+        <status>success</status>
+        <initiatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <channel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channel>
+    </operationExecution>
+    <operationExecution id="71">
+        <recordType>simple</recordType>
+        <timestamp>2024-09-20T08:53:30.625-04:00</timestamp>
+        <operation>
+            <objectDelta>
+                <t:changeType>modify</t:changeType>
+                <t:objectType>c:ResourceType</t:objectType>
+            </objectDelta>
+            <executionResult>
+                <operation>com.evolveum.midpoint.model.impl.lens.ChangeExecutor.executeDelta</operation>
+                <status>success</status>
+                <importance>normal</importance>
+                <token>1000000000000002676</token>
+            </executionResult>
+            <objectName>SCIM2 Slack</objectName>
+        </operation>
+        <status>success</status>
+        <initiatorRef oid="00000000-0000-0000-0000-000000000002" relation="org:default" type="c:UserType"/>
+        <channel>http://midpoint.evolveum.com/xml/ns/public/common/channels-3#user</channel>
+    </operationExecution>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <operationalState>
+        <lastAvailabilityStatus>up</lastAvailabilityStatus>
+        <message>Status set to UP because resource schema was successfully fetched</message>
+        <timestamp>2024-08-24T17:48:01.337-04:00</timestamp>
+        <nodeId>DefaultNode</nodeId>
+    </operationalState>
+    <operationalStateHistory id="3">
+        <lastAvailabilityStatus>up</lastAvailabilityStatus>
+        <message>Status set to UP because resource schema was successfully fetched</message>
+        <timestamp>2024-08-24T17:48:01.337-04:00</timestamp>
+        <nodeId>DefaultNode</nodeId>
+    </operationalStateHistory>
+    <connectorRef oid="061d5373-b81f-4f21-92e4-e7c62da4dd38" relation="org:default" type="c:ConnectorType"/>
+    <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+        <icfc:configurationProperties xmlns:gen36="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/connector-scim2/com.exclamationlabs.connid.base.scim2.Scim2Connector">
+            <gen36:ioErrorRetries>5</gen36:ioErrorRetries>
+            <gen36:deepGet>false</gen36:deepGet>
+            <gen36:deepImport>false</gen36:deepImport>
+            <gen36:importBatchSize>100</gen36:importBatchSize>
+            <gen36:pagination>true</gen36:pagination>
+            <gen36:serviceUrl>https://api.slack.com/scim/v2</gen36:serviceUrl>
+            <gen36:duplicateErrorReturnsId>true</gen36:duplicateErrorReturnsId>
+            <gen36:token><gen36:token>___Put_Bearer_Token_Here___</gen36:token></gen36:token>
+            <gen36:enableStandardSchema>false</gen36:enableStandardSchema>
+            <gen36:enableEnterpriseUser>true</gen36:enableEnterpriseUser>
+            <gen36:enableAWSSchema>false</gen36:enableAWSSchema>
+            <gen36:enableSlackSchema>true</gen36:enableSlackSchema>
+            <gen36:enableDynamicSchema>false</gen36:enableDynamicSchema>
+            <gen36:usersEndpointUrl>/Users</gen36:usersEndpointUrl>
+            <gen36:groupsEndpointUrl>/Groups</gen36:groupsEndpointUrl>
+            <gen36:userSchemaIdList>urn:ietf:params:scim:schemas:core:2.0:User</gen36:userSchemaIdList>
+            <gen36:userSchemaIdList>urn:ietf:params:scim:schemas:extension:enterprise:2.0:User</gen36:userSchemaIdList>
+            <gen36:userSchemaIdList>urn:ietf:params:scim:schemas:extension:slack:guest:2.0:User</gen36:userSchemaIdList>
+            <gen36:userSchemaIdList>urn:ietf:params:scim:schemas:extension:slack:profile:2.0:User</gen36:userSchemaIdList>
+            <gen36:groupSchemaIdList>urn:ietf:params:scim:schemas:core:2.0:Group</gen36:groupSchemaIdList>
+        </icfc:configurationProperties>
+    </connectorConfiguration>
+    <schema>
+        <cachingMetadata>
+            <retrievalTimestamp>2024-08-24T17:48:01.337-04:00</retrievalTimestamp>
+            <serialNumber>496ab803322179c5-d24a280d8d0bec92</serialNumber>
+        </cachingMetadata>
+        <generationConstraints>
+            <generateObjectClass>ri:Scim2Group</generateObjectClass>
+            <generateObjectClass>ri:Scim2User</generateObjectClass>
+        </generationConstraints>
+        <definition>
+            <xsd:schema xmlns:a="http://prism.evolveum.com/xml/ns/public/annotation-3" xmlns:ra="http://midpoint.evolveum.com/xml/ns/public/resource/annotation-3" xmlns:tns="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xml:space="preserve">
+                <xsd:import namespace="http://prism.evolveum.com/xml/ns/public/types-3"/>
+                <xsd:import namespace="http://prism.evolveum.com/xml/ns/public/annotation-3"/>
+                <xsd:import namespace="http://midpoint.evolveum.com/xml/ns/public/resource/annotation-3"/>
+                <xsd:complexType name="Scim2User">
+                    <xsd:annotation>
+                        <xsd:appinfo>
+                            <a:container/>
+                            <ra:resourceObject/>
+                            <ra:identifier>ri:id</ra:identifier>
+                            <ra:secondaryIdentifier>ri:userName</ra:secondaryIdentifier>
+                            <ra:displayNameAttribute>ri:userName</ra:displayNameAttribute>
+                            <ra:namingAttribute>ri:userName</ra:namingAttribute>
+                            <ra:nativeObjectClass>Scim2User</ra:nativeObjectClass>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="phoneNumbers" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>phoneNumbers</a:displayName>
+                                    <a:displayOrder>120</a:displayOrder>
+                                    <ra:nativeAttributeName>phoneNumbers</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>phoneNumbers</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="active" type="xsd:boolean">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>active</a:displayName>
+                                    <a:displayOrder>130</a:displayOrder>
+                                    <ra:nativeAttributeName>active</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>active</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="groups" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>groups</a:displayName>
+                                    <a:displayOrder>140</a:displayOrder>
+                                    <a:access>read</a:access>
+                                    <ra:nativeAttributeName>groups</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>groups</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="name_familyName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>name_familyName</a:displayName>
+                                    <a:displayOrder>150</a:displayOrder>
+                                    <ra:nativeAttributeName>name_familyName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>name_familyName</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="costCenter" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>costCenter</a:displayName>
+                                    <a:displayOrder>160</a:displayOrder>
+                                    <ra:nativeAttributeName>costCenter</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>costCenter</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="name_honorificSuffix" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>name_honorificSuffix</a:displayName>
+                                    <a:displayOrder>170</a:displayOrder>
+                                    <ra:nativeAttributeName>name_honorificSuffix</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>name_honorificSuffix</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" name="emails" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>emails</a:displayName>
+                                    <a:displayOrder>180</a:displayOrder>
+                                    <ra:nativeAttributeName>emails</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>emails</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="division" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>division</a:displayName>
+                                    <a:displayOrder>190</a:displayOrder>
+                                    <ra:nativeAttributeName>division</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>division</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="employeeNumber" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>employeeNumber</a:displayName>
+                                    <a:displayOrder>200</a:displayOrder>
+                                    <ra:nativeAttributeName>employeeNumber</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>employeeNumber</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="organization" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>organization</a:displayName>
+                                    <a:displayOrder>210</a:displayOrder>
+                                    <ra:nativeAttributeName>organization</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>organization</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="manager_displayName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>manager_displayName</a:displayName>
+                                    <a:displayOrder>220</a:displayOrder>
+                                    <ra:nativeAttributeName>manager_displayName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>manager_displayName</ra:frameworkAttributeName>
+                                    <ra:returnedByDefault>false</ra:returnedByDefault>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="name_middleName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>name_middleName</a:displayName>
+                                    <a:displayOrder>230</a:displayOrder>
+                                    <ra:nativeAttributeName>name_middleName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>name_middleName</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="manager_managerId" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>manager_managerId</a:displayName>
+                                    <a:displayOrder>240</a:displayOrder>
+                                    <ra:nativeAttributeName>manager_managerId</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>manager_managerId</ra:frameworkAttributeName>
+                                    <ra:returnedByDefault>false</ra:returnedByDefault>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="name_honorificPrefix" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>name_honorificPrefix</a:displayName>
+                                    <a:displayOrder>250</a:displayOrder>
+                                    <ra:nativeAttributeName>name_honorificPrefix</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>name_honorificPrefix</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="name_formatted" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>name_formatted</a:displayName>
+                                    <a:displayOrder>260</a:displayOrder>
+                                    <ra:nativeAttributeName>name_formatted</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>name_formatted</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="name_givenName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>name_givenName</a:displayName>
+                                    <a:displayOrder>270</a:displayOrder>
+                                    <ra:nativeAttributeName>name_givenName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>name_givenName</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="profileUrl" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>profileUrl</a:displayName>
+                                    <a:displayOrder>280</a:displayOrder>
+                                    <ra:nativeAttributeName>profileUrl</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>profileUrl</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="userType" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>userType</a:displayName>
+                                    <a:displayOrder>290</a:displayOrder>
+                                    <ra:nativeAttributeName>userType</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>userType</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="x509Certificates" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>x509Certificates</a:displayName>
+                                    <a:displayOrder>300</a:displayOrder>
+                                    <ra:nativeAttributeName>x509Certificates</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>x509Certificates</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="userName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>userName</a:displayName>
+                                    <a:displayOrder>110</a:displayOrder>
+                                    <ra:nativeAttributeName>userName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>__NAME__</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="timezone" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>timezone</a:displayName>
+                                    <a:displayOrder>310</a:displayOrder>
+                                    <ra:nativeAttributeName>timezone</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>timezone</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="photos" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>photos</a:displayName>
+                                    <a:displayOrder>320</a:displayOrder>
+                                    <ra:nativeAttributeName>photos</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>photos</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="displayName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>displayName</a:displayName>
+                                    <a:displayOrder>330</a:displayOrder>
+                                    <ra:nativeAttributeName>displayName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>displayName</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="entitlements" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>entitlements</a:displayName>
+                                    <a:displayOrder>340</a:displayOrder>
+                                    <ra:nativeAttributeName>entitlements</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>entitlements</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="manager_value" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>manager_value</a:displayName>
+                                    <a:displayOrder>350</a:displayOrder>
+                                    <ra:nativeAttributeName>manager_value</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>manager_value</ra:frameworkAttributeName>
+                                    <ra:returnedByDefault>false</ra:returnedByDefault>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="department" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>department</a:displayName>
+                                    <a:displayOrder>360</a:displayOrder>
+                                    <ra:nativeAttributeName>department</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>department</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="ims" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>ims</a:displayName>
+                                    <a:displayOrder>370</a:displayOrder>
+                                    <ra:nativeAttributeName>ims</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>ims</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="nickName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>nickName</a:displayName>
+                                    <a:displayOrder>380</a:displayOrder>
+                                    <ra:nativeAttributeName>nickName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>nickName</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="locale" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>locale</a:displayName>
+                                    <a:displayOrder>390</a:displayOrder>
+                                    <ra:nativeAttributeName>locale</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>locale</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="password" type="t:ProtectedStringType">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>password</a:displayName>
+                                    <a:displayOrder>400</a:displayOrder>
+                                    <a:access>create</a:access>
+                                    <a:access>update</a:access>
+                                    <ra:nativeAttributeName>password</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>password</ra:frameworkAttributeName>
+                                    <ra:returnedByDefault>false</ra:returnedByDefault>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="roles" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>roles</a:displayName>
+                                    <a:displayOrder>410</a:displayOrder>
+                                    <ra:nativeAttributeName>roles</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>roles</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="preferredLanguage" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>preferredLanguage</a:displayName>
+                                    <a:displayOrder>420</a:displayOrder>
+                                    <ra:nativeAttributeName>preferredLanguage</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>preferredLanguage</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="addresses" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>addresses</a:displayName>
+                                    <a:displayOrder>430</a:displayOrder>
+                                    <ra:nativeAttributeName>addresses</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>addresses</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="title" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>title</a:displayName>
+                                    <a:displayOrder>440</a:displayOrder>
+                                    <ra:nativeAttributeName>title</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>title</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="manager_ref" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>manager_ref</a:displayName>
+                                    <a:displayOrder>450</a:displayOrder>
+                                    <ra:nativeAttributeName>manager_ref</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>manager_ref</ra:frameworkAttributeName>
+                                    <ra:returnedByDefault>false</ra:returnedByDefault>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="externalId" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>externalId</a:displayName>
+                                    <a:displayOrder>460</a:displayOrder>
+                                    <ra:nativeAttributeName>externalId</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>externalId</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="id" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>id</a:displayName>
+                                    <a:displayOrder>100</a:displayOrder>
+                                    <a:access>create</a:access>
+                                    <a:access>read</a:access>
+                                    <ra:nativeAttributeName>id</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>__UID__</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+                <xsd:complexType name="Scim2Group">
+                    <xsd:annotation>
+                        <xsd:appinfo>
+                            <a:container/>
+                            <ra:resourceObject/>
+                            <ra:identifier>ri:id</ra:identifier>
+                            <ra:secondaryIdentifier>ri:displayName</ra:secondaryIdentifier>
+                            <ra:displayNameAttribute>ri:displayName</ra:displayNameAttribute>
+                            <ra:namingAttribute>ri:displayName</ra:namingAttribute>
+                            <ra:nativeObjectClass>Scim2Group</ra:nativeObjectClass>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                    <xsd:sequence>
+                        <xsd:element maxOccurs="unbounded" minOccurs="0" name="members" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>members</a:displayName>
+                                    <a:displayOrder>120</a:displayOrder>
+                                    <ra:nativeAttributeName>members</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>members</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="displayName" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>displayName</a:displayName>
+                                    <a:displayOrder>110</a:displayOrder>
+                                    <ra:nativeAttributeName>displayName</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>__NAME__</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element minOccurs="0" name="externalId" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>externalId</a:displayName>
+                                    <a:displayOrder>130</a:displayOrder>
+                                    <ra:nativeAttributeName>externalId</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>externalId</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="id" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:appinfo>
+                                    <a:displayName>id</a:displayName>
+                                    <a:displayOrder>100</a:displayOrder>
+                                    <a:access>create</a:access>
+                                    <a:access>read</a:access>
+                                    <ra:nativeAttributeName>id</ra:nativeAttributeName>
+                                    <ra:frameworkAttributeName>__UID__</ra:frameworkAttributeName>
+                                </xsd:appinfo>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:schema>
+        </definition>
+    </schema>
+    <schemaHandling>
+        <objectType id="7">
+            <kind>account</kind>
+            <intent>default</intent>
+            <displayName>Slack User</displayName>
+            <default>true</default>
+            <delineation>
+                <objectClass>ri:Scim2User</objectClass>
+            </delineation>
+            <focus>
+                <type>c:UserType</type>
+            </focus>
+            <attribute id="9">
+                <ref>ri:userName</ref>
+                <outbound>
+                    <name>name</name>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/name</path>
+                    </source>
+                </outbound>
+                <inbound id="10">
+                    <name>userName</name>
+                    <strength>strong</strength>
+                    <target>
+                        <path>name</path>
+                    </target>
+                    <use>correlation</use>
+                </inbound>
+            </attribute>
+            <attribute id="12">
+                <ref>ri:name_givenName</ref>
+                <outbound>
+                    <name>firstName</name>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/givenName</path>
+                    </source>
+                </outbound>
+                <inbound id="16">
+                    <name>firstName</name>
+                    <strength>strong</strength>
+                    <target>
+                        <path>givenName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="22">
+                <ref>ri:name_middleName</ref>
+                <outbound>
+                    <source>
+                        <path>additionalName</path>
+                    </source>
+                </outbound>
+                <inbound id="26">
+                    <strength>weak</strength>
+                    <target>
+                        <path>additionalName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="13">
+                <ref>ri:name_familyName</ref>
+                <outbound>
+                    <source>
+                        <path>$focus/familyName</path>
+                    </source>
+                </outbound>
+                <inbound id="17">
+                    <name>lastName</name>
+                    <strength>strong</strength>
+                    <target>
+                        <path>familyName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="14">
+                <ref>ri:name_honorificPrefix</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/honorificPrefix</path>
+                    </source>
+                </outbound>
+                <inbound id="18">
+                    <name>honorificPrefix</name>
+                    <strength>strong</strength>
+                    <target>
+                        <path>honorificPrefix</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="15">
+                <ref>ri:name_honorificSuffix</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/honorificSuffix</path>
+                    </source>
+                </outbound>
+                <inbound id="19">
+                    <name>honorificSuffix</name>
+                    <strength>strong</strength>
+                    <target>
+                        <path>honorificSuffix</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="23">
+                <ref>ri:nickName</ref>
+                <outbound>
+                    <source>
+                        <path>nickName</path>
+                    </source>
+                </outbound>
+                <inbound id="19">
+                    <name>nickName</name>
+                    <strength>strong</strength>
+                    <target>
+                        <path>nickName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="24">
+                <ref>ri:timezone</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>timezone</path>
+                    </source>
+                </outbound>
+                <inbound id="27">
+                    <name>timezone</name>
+                    <strength>strong</strength>
+                    <target>
+                        <path>timezone</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="44">
+                <ref>ri:preferredLanguage</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/preferredLanguage</path>
+                    </source>
+                </outbound>
+                <inbound id="64">
+                    <strength>strong</strength>
+                    <target>
+                        <path>preferredLanguage</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="45">
+                <ref>ri:displayName</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/fullName</path>
+                    </source>
+                </outbound>
+                <inbound id="65">
+                    <strength>strong</strength>
+                    <target>
+                        <path>fullName</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="46">
+                <ref>ri:costCenter</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/costCenter</path>
+                    </source>
+                </outbound>
+                <inbound id="59">
+                    <strength>strong</strength>
+                    <target>
+                        <path>costCenter</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="47">
+                <ref>ri:profileUrl</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/extension/profileUrl</path>
+                    </source>
+                </outbound>
+                <inbound id="68">
+                    <lifecycleState>active</lifecycleState>
+                    <strength>strong</strength>
+                    <target>
+                        <path>extension/profileUrl</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="48">
+                <ref>ri:title</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/title</path>
+                    </source>
+                </outbound>
+                <inbound id="69">
+                    <strength>strong</strength>
+                    <target>
+                        <path>title</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="50">
+                <ref>ri:locale</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/locale</path>
+                    </source>
+                </outbound>
+                <inbound id="70">
+                    <strength>strong</strength>
+                    <target>
+                        <path>locale</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="51">
+                <ref>ri:userType</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/extension/userType</path>
+                    </source>
+                </outbound>
+            </attribute>
+            <attribute id="53">
+                <ref>ri:photos</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/jpegPhoto</path>
+                    </source>
+                </outbound>
+            </attribute>
+            <attribute id="55">
+                <ref>ri:addresses</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/locality</path>
+                    </source>
+                    <expression>
+                        <script>
+                            <code>
+                        import groovy.json.JsonOutput
+                        def map = new HashMap();
+                        map.put('locality', locality.getOrig());
+                        def out  = JsonOutput.toJson(map);
+                        return out;
+                    </code>
+                        </script>
+                    </expression>
+                </outbound>
+            </attribute>
+            <attribute id="56">
+                <ref>ri:phoneNumbers</ref>
+                <outbound>
+                    <strength>strong</strength>
+                    <source>
+                        <path>$focus/extension/mobileNumber</path>
+                    </source>
+                    <source>
+                        <path>$focus/telephoneNumber</path>
+                    </source>
+                    <expression>
+                        <script>
+                            <code>
+                            import groovy.json.JsonOutput
+                            def primary = null;
+                            def second = null;
+                            def map = new HashMap();
+                            if ( telephoneNumber != null ) {
+                                map.put('value', telephoneNumber);
+                            }
+                            map.put('primary', true);
+                            map.put('type', 'work');
+                            primary = JsonOutput.toJson(map);
+                            log.warn("Primary Phone {}", primary);
+
+                            map = new HashMap();
+                            if ( mobileNumber != null ) {
+                                map.put('value', mobileNumber);
+                            }
+                            map.put('primary', false);
+                            map.put('type', 'mobile');
+                            second = JsonOutput.toJson(map);
+                            log.warn("Mobile Phone {}", second);
+
+
+                            return [primary, second];
+
+                            </code>
+                        </script>
+                    </expression>
+                </outbound>
+            </attribute>
+            <attribute id="58">
+                <ref>ri:employeeNumber</ref>
+                <inbound id="60">
+                    <strength>strong</strength>
+                    <target>
+                        <path>employeeNumber</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <attribute id="63">
+                <ref>ri:active</ref>
+                <inbound id="66">
+                    <strength>strong</strength>
+                    <target>
+                        <path>extension/usrStatus</path>
+                    </target>
+                </inbound>
+            </attribute>
+            <activation>
+                <administrativeStatus>
+                    <outbound id="41">
+                        <expression>
+                            <asIs/>
+                        </expression>
+                    </outbound>
+                </administrativeStatus>
+                <disableInsteadOfDelete>
+                    <lifecycleState>active</lifecycleState>
+                </disableInsteadOfDelete>
+            </activation>
+            <configuredCapabilities xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
+                <cap:activation>
+                    <cap:status>
+                        <cap:enabled>true</cap:enabled>
+                        <cap:returnedByDefault>true</cap:returnedByDefault>
+                        <cap:attribute>ri:active</cap:attribute>
+                        <cap:enableValue>true</cap:enableValue>
+                        <cap:disableValue>false</cap:disableValue>
+                        <cap:ignoreAttribute>false</cap:ignoreAttribute>
+                    </cap:status>
+                </cap:activation>
+            </configuredCapabilities>
+            <correlation>
+                <correlators>
+                    <items id="38">
+                        <name>name</name>
+                        <description>Match Username</description>
+                        <enabled>true</enabled>
+                        <item id="39">
+                            <ref>c:name</ref>
+                        </item>
+                        <composition>
+                            <weight>1.0</weight>
+                        </composition>
+                    </items>
+                </correlators>
+            </correlation>
+            <synchronization>
+                <reaction id="32">
+                    <situation>unlinked</situation>
+                    <actions>
+                        <link id="35"/>
+                    </actions>
+                </reaction>
+                <reaction id="33">
+                    <situation>linked</situation>
+                    <actions>
+                        <synchronize id="36"/>
+                    </actions>
+                </reaction>
+            </synchronization>
+        </objectType>
+    </schemaHandling>
+    <capabilities>
+        <cachingMetadata>
+            <retrievalTimestamp>2024-08-24T17:48:01.329-04:00</retrievalTimestamp>
+            <serialNumber>606fd0302e5dd01f-35cd9d890a953f89</serialNumber>
+        </cachingMetadata>
+        <native xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
+            <cap:schema/>
+            <cap:discoverConfiguration/>
+            <cap:activation>
+                <cap:status/>
+            </cap:activation>
+            <cap:create/>
+            <cap:read>
+                <cap:returnDefaultAttributesOption>true</cap:returnDefaultAttributesOption>
+            </cap:read>
+            <cap:update>
+                <cap:delta>true</cap:delta>
+                <cap:addRemoveAttributeValues>true</cap:addRemoveAttributeValues>
+            </cap:update>
+            <cap:delete/>
+            <cap:testConnection/>
+            <cap:script>
+                <cap:host id="2">
+                    <cap:type>connector</cap:type>
+                </cap:host>
+            </cap:script>
+            <cap:pagedSearch/>
+        </native>
+    </capabilities>
+</resource>

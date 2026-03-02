@@ -1,0 +1,33 @@
+<attribute id="56">
+    <ref>ri:phoneNumbers</ref>
+    <outbound>
+        <strength>strong</strength>
+        <source>
+            <path>$focus/extension/mobileNumber</path>
+        </source>
+        <source>
+            <path>$focus/telephoneNumber</path>
+        </source>
+        <expression>
+            <script>
+                <code>import groovy.json.JsonOutput
+
+                    def map = new HashMap();
+                    map.put('value', telephoneNumber);
+                    map.put('primary', true);
+                    map.put('type', 'work');
+                    def primary = JsonOutput.toJson(map);
+                    log.warn("Primary Phone {}", primary);
+                    map = new HashMap();
+                    map.put('value', mobileNumber);
+                    map.put('primary', false);
+                    map.put('type', 'mobile');
+                    def second = JsonOutput.toJson(map);
+                    log.warn("Mobile Phone {}", second);
+
+                    return [primary, second];
+                </code>
+            </script>
+        </expression>
+    </outbound>
+</attribute>

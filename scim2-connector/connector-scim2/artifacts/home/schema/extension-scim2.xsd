@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xsd:schema elementFormDefault="qualified" targetNamespace="http://example.com/midpoint"
+    xmlns:a="http://prism.evolveum.com/xml/ns/public/annotation-3"
+    xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:complexType name="UserExtensionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <a:extension ref="c:UserType"/>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="userName" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>userName</a:displayName>
+                        <a:displayOrder>141</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>SCIM2 User Name</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="profileUrl" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>Profile URL</a:displayName>
+                        <a:displayOrder>142</a:displayOrder>
+                        <xsd:documentation>Link to User's Profile</xsd:documentation>
+                    </xsd:appinfo>
+                    <xsd:documentation>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="userType" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>User Type</a:displayName>
+                        <a:displayOrder>143</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>TRUE: is manager.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="usrStatus" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>User Status</a:displayName>
+                        <a:displayOrder>144</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>FALSE: Inactive, TRUE: Active</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="mobileNumber" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>Mobile Phone</a:displayName>
+                        <a:displayOrder>145</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>Users Cell Phone number</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="streetAddress" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>Street Address</a:displayName>
+                        <a:displayOrder>146</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>Users Street Address</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="city" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>City</a:displayName>
+                        <a:displayOrder>147</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>City where the user is located</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="state" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>State</a:displayName>
+                        <a:displayOrder>148</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>State where the user is located</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+			<xsd:element name="country" type="xsd:string" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>Country</a:displayName>
+                        <a:displayOrder>1505</a:displayOrder>
+                        <a:help>Work Country</a:help>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="postalCode" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>Postal Code</a:displayName>
+                        <a:displayOrder>148</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>User's Postal Code</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="personalEmail" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>Alternate Email</a:displayName>
+                        <a:displayOrder>148</a:displayOrder>
+                    </xsd:appinfo>
+                    <xsd:documentation>User's Personal Email Address</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+			<xsd:element name="awsDivision" type="xsd:string" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>AWS Division</a:displayName>
+                        <a:displayOrder>1507</a:displayOrder>
+                        <a:help>User's division on AWS</a:help>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="awsOrganization" type="xsd:string" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>AWS Organization</a:displayName>
+                        <a:displayOrder>1507</a:displayOrder>
+                        <a:help>User's organization on AWS</a:help>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="awsDepartment" type="xsd:string" minOccurs="0" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>AWS Department</a:displayName>
+                        <a:displayOrder>1507</a:displayOrder>
+                        <a:help>User's department on AWS</a:help>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:element>
+			<xsd:element name="awsGroups" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>AWS Groups</a:displayName>
+                        <a:displayOrder>1507</a:displayOrder>
+                        <a:help>User's Group IDs on AWS</a:help>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+	<xsd:complexType name="RoleExtensionType">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <a:extension ref="c:RoleType"/>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="group_members" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:appinfo>
+                        <a:indexed>true</a:indexed>
+                        <a:displayName>Group Members</a:displayName>
+                        <a:displayOrder>1501</a:displayOrder>
+                        <a:help>Members of a group the role represents</a:help>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

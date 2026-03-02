@@ -1,0 +1,36 @@
+<role xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="8ba3e8c7-6292-464b-b069-8b610294a259">
+    <name>Metarole for AWS (SCIM2)</name>
+    <assignment>
+        <targetRef oid="00000000-0000-0000-0000-000000000328" relation="org:default" type="c:ArchetypeType"/>
+        <activation>
+            <effectiveStatus>enabled</effectiveStatus>
+        </activation>
+    </assignment>
+    <iteration>0</iteration>
+    <iterationToken/>
+    <archetypeRef oid="00000000-0000-0000-0000-000000000328" relation="org:default" type="c:ArchetypeType"/>
+    <roleMembershipRef oid="00000000-0000-0000-0000-000000000328" relation="org:default" type="c:ArchetypeType">
+    </roleMembershipRef>
+    <activation>
+        <effectiveStatus>enabled</effectiveStatus>
+        <enableTimestamp>2024-12-20T21:45:40.212Z</enableTimestamp>
+    </activation>
+    <inducement>
+        <construction>
+            <strength>strong</strength>
+            <resourceRef oid="c122a0fb-2a26-4e34-bab5-7593206e1842" relation="org:default" type="c:ResourceType"/>
+            <kind>account</kind>
+            <intent>default</intent>
+        </construction>
+        <order>2</order>
+    </inducement>
+    <inducement>
+        <construction>
+            <strength>strong</strength>
+            <resourceRef oid="c122a0fb-2a26-4e34-bab5-7593206e1842" relation="org:default" type="c:ResourceType"/>
+            <kind>entitlement</kind>
+            <intent>groups</intent>
+        </construction>
+        <order>1</order>
+    </inducement>
+</role>

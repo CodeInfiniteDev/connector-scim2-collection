@@ -1,0 +1,37 @@
+<attribute id="25">
+    <ref>ri:emails</ref>
+    <inbound id="28">
+        <strength>weak</strength>
+        <expression>
+            <script>
+                <code>
+
+                    log.warn("Email {}", input);
+                    value = null;
+                    valueMap = new HashMap();
+                    valueMap.put("inbound", input);
+                    value = provisionIAM.execute("getValueIfPrimary", valueMap);
+                    if ( value != null ) {
+                    return value;
+                    }
+
+                    return null;
+                </code>
+            </script>
+        </expression>
+        <target>
+            <path>description</path>
+        </target>
+        <condition>
+            <script>
+                <code>
+                    log.warn("Email Condition {}", input);
+                    valueMap = new HashMap();
+                    valueMap.put("inbound", input);
+                    value = provisionIAM.execute("getValueIfPrimary", valueMap);
+                    return ( value != null )
+                </code>
+            </script>
+        </condition>
+    </inbound>
+</attribute>

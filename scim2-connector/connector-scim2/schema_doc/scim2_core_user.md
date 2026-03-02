@@ -1,0 +1,259 @@
+<table style="border: 1px black;">
+	<thead style="text-align: left">
+		<tr>
+			<th>name</th>
+			<th>type</th>
+			<th>multiValued</th>
+			<th>description</th>
+			<th>required</th>
+			<th>caseExact</th>
+			<th>mutability</th>
+			<th>returned</th>
+			<th>uniqueness</th>
+		</tr>
+	</thead>
+	<tbody style="vertical-align: top">
+		<tr>
+			<td>userName</td>
+			<td>string</td>
+			<td>false</td>
+			<td>Unique identifier for the User, typically used by the user to directly authenticate to the service provider. Each User MUST include a non-empty userName value.  This identifier MUST be unique across the service provider's entire set of Users. REQUIRED.</td>
+			<td>true</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>server</td>
+		</tr>
+		<tr>
+			<td>name</td>
+			<td>complex</td>
+			<td>false</td>
+			<td>The components of the user's real name. Providers MAY return just the full name as a single string in the formatted sub-attribute, or they MAY return just the individual component attributes using the other sub-attributes, or they MAY return both.  If both variants are returned, they SHOULD be describing the same name, with the formatted name indicating how the component attributes should be combined.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>displayName</td>
+			<td>string</td>
+			<td>false</td>
+			<td>The name of the User, suitable for display to end-users.  The name SHOULD be the full name of the User being described, if known.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>nickName</td>
+			<td>string</td>
+			<td>false</td>
+			<td>The casual way to address the user in real life, e.g., 'Bob' or 'Bobby' instead of 'Robert'.  This attribute SHOULD NOT be used to represent a User's username (e.g., 'bjensen' or 'mpepperidge').</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>profileUrl</td>
+			<td>reference</td>
+			<td>false</td>
+			<td>A fully qualified URL pointing to a page representing the User's online profile.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>title</td>
+			<td>string</td>
+			<td>false</td>
+			<td>The user's title, such as "Vice President."</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>userType</td>
+			<td>string</td>
+			<td>false</td>
+			<td>Used to identify the relationship between the organization and the user.  Typical values used might be 'Contractor', 'Employee', 'Intern', 'Temp', 'External', and 'Unknown', but any value may be used.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>preferredLanguage</td>
+			<td>string</td>
+			<td>false</td>
+			<td>Indicates the User's preferred written or spoken language.  Generally used for selecting a localized user interface; e.g., 'en_US' specifies the language English and country US.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>locale</td>
+			<td>string</td>
+			<td>false</td>
+			<td>Used to indicate the User's default location for purposes of localizing items such as currency, date time format, or numerical representations.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>timezone</td>
+			<td>string</td>
+			<td>false</td>
+			<td>The User's time zone in the 'Olson' time zone database format, e.g., 'America/Los_Angeles'.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>active</td>
+			<td>boolean</td>
+			<td>false</td>
+			<td>A Boolean value indicating the User's administrative status.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>password</td>
+			<td>string</td>
+			<td>false</td>
+			<td>The User's cleartext password.  This attribute is intended to be used as a means to specify an initial password when creating a new User or to reset an existing User's password.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>writeOnly</td>
+			<td>never</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>emails</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>Email addresses for the user.  The value SHOULD be canonicalized by the service provider, e.g., 'bjensen@example.com' instead of 'bjensen@EXAMPLE.COM'. Canonical type values of 'work', 'home', and 'other'.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>phoneNumbers</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>Phone numbers for the User.  The value SHOULD be canonicalized by the service provider according to the format specified in RFC 3966, e.g., 'tel:+1-201-555-0123'. Canonical type values of 'work', 'home', 'mobile', 'fax', 'pager', and 'other'.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ims</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>Instant messaging addresses for the User.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>photos</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>URLs of photos of the User.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>addresses</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>A physical mailing address for this User. Canonical type values of 'work', 'home', and 'other'.  This attribute is a complex type with the following sub-attributes.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td>none</td>
+		</tr>
+		<tr>
+			<td>groups</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>A list of groups to which the user belongs, either through direct membership, through nested groups, or dynamically calculated.</td>
+			<td>false</td>
+			<td></td>
+			<td>readOnly</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>entitlements</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>A list of entitlements for the User that represent a thing the User has.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>roles</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>A list of roles for the User that collectively represent who the User is, e.g., 'Student', 'Faculty'.</td>
+			<td>false</td>
+			<td></td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>x509Certificates</td>
+			<td>complex</td>
+			<td>true</td>
+			<td>A list of certificates issued to the User.</td>
+			<td>false</td>
+			<td>false</td>
+			<td>readWrite</td>
+			<td>default</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>

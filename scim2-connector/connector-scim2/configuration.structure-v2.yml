@@ -1,0 +1,99 @@
+---
+# This yml version is not used.  It describes possible configuration options for dynamic schema support.
+name: 'Scim2'
+configurationClass:
+  name: 'Scim2Configuration'
+  package: 'com.exclamationlabs.connid.base.scim2.configuration'
+rest: true # io-error-retries
+service: true # service-url
+results: true
+security:
+  authenticator:
+    directAccessToken: true
+custom:
+  items:
+    required:
+      schemaUrl:
+        type: string
+        order: 701
+        display: 'Schema URL'
+        help: 'URL to discover schema for a particular service provider'
+      schemaRawJson:
+        type: string
+        order: 710
+        display: 'Schema JSON'
+        help: 'The actual Schema return for a particular service provider. This can be populated from the URL at discovery time.'
+      useSchemaUrl:
+        type: boolean
+        default: 'false'
+        order: 720
+        display: 'Use Schema URL'
+        help: 'Where to use URL or JSON especially when URL is not available'
+      resourceTypeUrl:
+        type: string
+        order: 730
+        display: 'Resource Type URL'
+        help: 'URL to Discover resource type for a particular service provider. These included Users and Groups URL endpoints. '
+      resourceTypeRawJson:
+        type: string
+        order: 740
+        display: 'Resource Type JSON'
+        help: 'The actual resource types for a particular service provider'
+      useResourceTypeUrl:
+        type: boolean
+        default: 'false'
+        order: 750
+        display: 'Use Resource Type URL'
+        help: 'Whether to use the URL or the JSON. Especially when the URL is not supported by the service provider.'
+      enableStandardSchema:
+        type: boolean
+        default: 'false'
+        order: 760
+        display: 'Enable Standard Schema'
+        help: 'Uses prebuilt java objects based on the stand schema. '
+      enableEnterpriseUser:
+        type: boolean
+        default: 'false'
+        order: 770
+        display: 'Enable Enterprise User'
+        help: 'Extend the user schema with enterprise attributes '
+      enableAWSSchema:
+        type: boolean
+        default: 'false'
+        order: 780
+        display: 'Enable AWS Schema'
+        help: 'Use a pre-built java objects as defined for AWS As specified here https://docs.aws.amazon.com/singlesignon/latest/developerguide/what-is-scim.html'
+      enableSlackSchema:
+        type: boolean
+        default: 'false'
+        order: 790
+        display: 'Enable Slack Schema'
+        help: 'Use prebuilt java classes as define for Slack as specified here: https://api.slack.com/admins/scim2'
+      enableDynamicSchema:
+        type: boolean
+        default: 'false'
+        order: 800
+        display: 'Enable Dynamic Schema'
+        help: 'Use the Resource Type and/or the Schema defined '
+      usersEndpointUrl:
+        type: string
+        order: 810
+        display: 'Users Endpoint URL'
+        help: 'Discovered from the resource type or entered manually'
+      groupEndpointUrl:
+        type: string
+        order: 820
+        display: 'Group Endpoint URL'
+        help: 'Discovered from the resource type or entered manually'
+      userSchemaIdList:
+        type: string
+        order: 830
+        multiValued: true
+        display: 'User SchemaId List'
+        help: 'A list of user schemas that define a user. This is discoverable from the Resource Type URL, JSON, or by one of the prebuilt java classes'
+      groupSchemaIDList:
+        type: string
+        order: 840
+        multiValued: true
+        display: 'Group SchemaId List'
+        help: 'A list of Group schemas that define a Group. This is discoverable from the Resource Type URL or JSON. or by one of the prebuilt java classes '
