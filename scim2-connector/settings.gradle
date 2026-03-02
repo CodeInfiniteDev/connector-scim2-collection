@@ -1,0 +1,4 @@
+rootProject.name = 'connector-parent'
+
+include 'connector-base'
+include 'connector-scim2'

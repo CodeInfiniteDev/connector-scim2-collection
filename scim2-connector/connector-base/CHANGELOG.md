@@ -1,0 +1,85 @@
+# connector-base
+### Java Base Connector Framework for Identity Access Management (IAM) and Midpoint integration
+
+This software is Copyright 2020 Exclamation Labs.  Licensed under the Apache License, Version 2.0.
+
+This project serves as a base framework for various IAM connectors.  Its purpose
+is to greatly reduce code repetition and complexity when writing new connectors
+and minimize the interactions with the ConnId framework and have much of that
+taken care of by a common API.
+
+# Change Log
++ **4.1.11** - NDSU-1 - Fix name of source jar file (01/19/2024)
++ **4.1.10** - FIN-11162 - Resolve Logback DOS vulnerability (12/11/2023)
++ **4.1.9** - FIN-11004 - Adjust BaseRestDriver to allow override needed for FIS Horizon re-auth (11/29/2023)
++ **4.1.8** - Fix Charset on outbound to specify UTF-8 charset
++ **4.1.7** - FIN-11103 - Support multiple PEM content types (11/06/2023)
++ **4.1.6** - FIN-11103 - Private Key and PEM changed to guarded string (11/02/2023)
++ **4.1.5** - FIN-11103 - Private Key and PEM support for ADP (11/01/2023)
++ **4.1.4** - FIN-11092 - Remove snakeyml dependency ref (10/30/2023)
++ **4.1.3** - FIN-11091 - Add security to Keystore client loader (10/27/2023)
++ **4.1.2** - Address Snyk Vulnerabilities (09/22/2023)
++ **4.1.1** - Don't Output guarded strings to log FIN-790 (08/22/2023)
++ **4.1.0** - Support ImportAll-Filtering and Threading of paginated getAll requests (Workday) FIN-790 FIN-10678 (08/03/2023)
++ **4.0.5** - Do not reuse HttpClient for performance/stability in Midpoint FIN-10678 (07/25/2023)
++ **4.0.4** - Fix preFetch logistical issues FIN-10678 (07/06/2023)
++ **4.0.3** - Fix AndFilter paging bug FIN-10678 (06/30/2023)
++ **4.0.2** - Fix ResultsPagination setup FIN-10678 (06/30/2023)
++ **4.0.1** - Enhanced pagination and filtering support FIN-10678 (06/30/2023)
++ **3.1.6** - Fix adapter init to setup driver, needed for ADP FIN-10111 (06/06/2023)
++ **3.1.5** - Change OAuth2 execution and Patch support for Provision OP support FIN-10606 (05/18/2023)
++ **3.1.4** - Add ADP PFX key password support FIN-10111 (04/26/2023)
++ **3.1.3** - Fix sad path execution in BaseRestDriver class (04/21/2023)
++ **3.1.2** - Allow process method to pass ConnectorIOExceptions into BaseRestDriver class (04/17/2023)
++ **3.1.1** - Enhance filtering support FIN-10486 (04/04/2023)
++ **3.0.5** - Enhance OAuth2 authenticators for customization (Zoom) FIN-10017 (03/22/2023)
++ **3.0.4** - Allow custom BaseRestDrive response handling needed for Paylocity too many requests (03/09/2023)
++ **3.0.3** - Ensure BaseRestDriver supports raw json string support for request - FIN-10378 (03/08/2023)
++ **3.0.2** - Add custom exclusion strategy GSON support needed for FIS Horizon FIN-9702 (03/02/2023)
++ **3.0.1** - Migrate to GAR, get Jenkins build working (01/31/2023)
++ **3.0** - Migrate to GAR, update dependencies, update to Junit 5, add code formatting, support Commons logging FIN-9902 (01/31/2023)
++ **2.1.1** - Migrate to Google Archive Repository FIN-9902 (11/28/2022)
++ **2.0.16** - Revert Behavior Interfaces; update configuration documentation (08/19/2022)
++ **2.0.15** - Added Behavior Interfaces for configuration ref FIN-9503 (08/15/2022)
++ **2.0.14.1** - Add support to read in PFX certificate as a resource FIN-9320 (06/14/2022)
++ **2.0.14** - Add GuardedString read utility FIN-918 (05/27/2022)
++ **2.0.13.3** - Add API integration test support FIN-9158 (03/30/2022)
++ **2.0.12** - Refactor filtering to allow for equals/contains of both id's/name searches FIN-8980 (Salesforce/CNOB discovery support solution) (02/24/2022)
++ **2.0.11.1** - bug fix - Make sure AlreadyExistsException is thrown when duplicateErrorReturnsId is false (02/22/2022)
++ **2.0.11** - Add duplicateErrorReturnsId support FIN-8819 (02/02/2022)
++ **2.0.10** - Fix HttpBasicAuth in BaseRestDriver (needed for Bamboo HR) (01/14/2022)
++ **2.0.9** - Enhance security support for FIS ClientCredentials/PFX setup (12/08/2021)
++ **2.0.8** - Add string array and paginator allowPartialAttributeValues needed for Paycom (12/01/2021)
++ **2.0.7** - Fix strange bug where BaseAdapter does not see generic configuration object (11/30/2021)
++ **2.0.6** - Fix support for GuardedString and improve test validation output (11/29/2021)
++ **2.0.5** - Added FileLoaderUtil to get key file loading working again for Jenkins (11/17/2021)
++ **2.0.4** - Adjust JWTRS256Authenticator to get Docusign working with extraClaimData (11/16/2021)
++ **2.0.3** - Change BaseRestDriver to reuse prior http client - helps with import and calls with repetitive use (11/15/2021)
++ **2.0.2** - Fix integration test validation - delegate to connector init method (11/10/2021)
++ **2.0.1** - Added plugin-generated Configuration, improved pagination and results filtering support(11/10/2021)
++ **1.2.0** - Add filtering support for resources(09/16/2021)
++ **1.1.5** - Add support for nativeName attribute info to schema building(08/12/2021)
++ **1.1.4** - Add retry logic support for BaseRestDriver(05/10/2021)
++ **1.1.3** - Added CHANGELOG.md for versions and removed Javadoc support from repo/gradle (05/03/2021)
++ **1.1.2** - Remove final keyword on BaseAdapter `get` method to support customization (04/26/2021)
++ **1.1.1** - Added BaseSoapDriver and SOAP support to base framework(04/16/2021)
++ **1.1.0** - Allow passage of IAM paging data (in `OperationOptions`) and other custom data to 
+Driver and Invocator levels via `Map<String,Object>`(04/16/2021)
++ **1.0.7** - Allow support for retrieving HTTP response header data to BaseRestDriver (03/14/2021)
++ **1.0.6** - Added OAuth2 support for `Scope` for Client Credentials authentication type (03/08/2021)
++ **1.0.5** - Improved mock REST response for unit testing in `connector-base-test-support` (02/16/2021)
++ **1.0.4** - Fix attribute handling of Attribute passing to response handler (02/09/2021)
++ **1.0.3** - Many fixes for custom `ObjectClass` types support (02/09/2021)
++ **1.0.2** - Improved generics in base framework and added Invocator support and visibility into 
+ BaseRestDriver execute methods. (01/27/2021)
++ **1.0.0** - Major refactor: Added support for custom `ObjectClass` types to base framework.  Removed hard definitions 
+for users and groups types. (01/11/2021)
++ **0.8.0** - Pass through `OperationOptions` to Adapter level for paging/additional data support (11/19/2020)
++ **0.7.0** - Add retry support to BaseRestDriver for expired Authenticator token (07/28/2020)
++ **0.6.0** - Add custom properties Domain and Subdomain to configuration for `Sharefile` (07/22/2020)
++ **0.5.0** - Add additional headers support to configuration from Authenticator, additional work for `RingCentral` (07/15/2020)
++ **0.4.0** - Add additional headers support to configuration from Authenticator for (07/08/2020)
++ **0.3.0** - Added custom property support for `GotoMeeting` (07/07/2020)
++ **0.2.0** - Fixes for RefreshTokenAuthenticator for `WebEx`, clear JDK properties prior to OAuth2 execution for 
+ correctness in Midpoint (07/07/2020)
++ **0.1.0** - Initial implementation of base framework (06/03/2020)

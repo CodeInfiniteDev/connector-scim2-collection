@@ -1,0 +1,8 @@
+/.idea
+/test-config.json
+/connector-base.iml
+/target
+/out
+.DS_Store
+/build
+/.gradle
