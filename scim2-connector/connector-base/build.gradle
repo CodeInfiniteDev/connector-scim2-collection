@@ -1,8 +1,9 @@
 plugins {
+    id 'java'
     id 'java-library'
     id 'maven-publish'
     id 'com.google.cloud.artifactregistry.gradle-plugin' version '2.2.0'
-    id 'com.github.sherter.google-java-format' version '0.9'
+//    id 'com.github.sherter.google-java-format' version '0.9'
 }
 
 repositories {
@@ -12,10 +13,12 @@ repositories {
     }
 }
 
-googleJavaFormat {}
+//googleJavaFormat {}
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 group = 'com.exclamationlabs.connid'
 
 def build_version = System.getenv('BUILD_NUMBER') == null ? System.currentTimeMillis() : System.getenv('BUILD_NUMBER')

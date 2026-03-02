@@ -39,8 +39,10 @@ idea {
 }
 apply plugin: 'com.exclamationlabs.connid.base.config.plugin'
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 def build_version = System.getenv('BUILD_NUMBER') == null ? System.currentTimeMillis() : System.getenv('BUILD_NUMBER')
 project.version="${project_version}-${build_version}"
@@ -110,7 +112,7 @@ def thinClassifierName = 'thin'
 task fatJar(type: Jar) {
 
     archiveClassifier = fatClassifierName
-    archiveName("${project.name}-${project.version}-${fatClassifierName}.jar")
+    archiveFileName = "${project.name}-${project.version}-${fatClassifierName}.jar"
     from 'custom', 'build/classes/java/main', 'src/main/resources'
 
     manifest {
@@ -123,7 +125,7 @@ task fatJar(type: Jar) {
 task thinJar(type: Jar) {
 
     archiveClassifier = thinClassifierName
-    archiveName("${project.name}-${project.version}-${thinClassifierName}.jar")
+    archiveFileName = "${project.name}-${project.version}-${thinClassifierName}.jar"
     from 'build/classes/java/main'
 
 }
