@@ -252,6 +252,7 @@ public class SCIMv2Connector extends AbstractSCIMConnector<
 
         // manage members, only values to add and remove are supported
         List<SCIMv2PatchOperation> memberOperations = new ArrayList<>();
+        // legacy "members" attribute: treats all IDs as user members
         modifications.stream().filter(mod -> SCIMAttributeUtils.SCIM_GROUP_MEMBERS.equalsIgnoreCase(mod.getName()))
                 .findFirst().ifPresent(mod -> {
                     // remove ops
@@ -290,18 +291,148 @@ public class SCIMv2Connector extends AbstractSCIMConnector<
                                     BaseResourceReference resRef = null;
                                     if (user == null) {
                                         LOG.error(
-                                                "Unable to replace member {0} on the group, user does not exist",
-                                                vtr);
+                                                "Unable to replace member {0} on the group, user does not exist", vtr);
                                     } else {
                                         resRef = new BaseResourceReference.Builder().value(user.getId())
                                                 .ref(configuration.getBaseAddress() + "User/" + user.getId())
-                                                .display(user.getDisplayName()).build();
+                                                .display(user.getDisplayName())
+                                                .type("User")
+                                                .build();
                                     }
                                     return resRef;
                                 }).filter(Objects::nonNull).collect(Collectors.toList()))
                                 .build());
                     }
                 });
+
+        // new synthetic user_member attribute: IDs are treated as user members
+        modifications.stream()
+                .filter(mod -> SCIMAttributeUtils.SCIM_GROUP_USER_MEMBERS.equalsIgnoreCase(mod.getName()))
+                .findFirst().ifPresent(mod -> {
+                    // remove ops
+                    if (!CollectionUtil.isEmpty(mod.getValuesToRemove())) {
+                        memberOperations.add(new SCIMv2PatchOperation.Builder()
+                                .op(SCIMAttributeUtils.SCIM_REMOVE)
+                                .path(buildFilteredPath(
+                                        SCIMAttributeUtils.SCIM_GROUP_MEMBERS,
+                                        null,
+                                        mod.getValuesToRemove(),
+                                        "or",
+                                        "eq"))
+                                .build());
+                    }
+                    // add ops
+                    if (!CollectionUtil.isEmpty(mod.getValuesToAdd())) {
+                        memberOperations.add(new SCIMv2PatchOperation.Builder()
+                                .op(SCIMAttributeUtils.SCIM_ADD)
+                                .path(SCIMAttributeUtils.SCIM_GROUP_MEMBERS)
+                                .value(mod.getValuesToAdd().stream().map(vta -> {
+                                    SCIMv2User user = client.getUser(vta.toString());
+                                    BaseResourceReference resRef = null;
+                                    if (user == null) {
+                                        LOG.error("Unable to add member {0} to the group, user does not exist", vta);
+                                    } else {
+                                        resRef = new BaseResourceReference.Builder()
+                                                .value(user.getId())
+                                                .ref(configuration.getBaseAddress() + "Users/" + user.getId())
+                                                .display(user.getDisplayName())
+                                                .type("User")
+                                                .build();
+                                    }
+                                    return resRef;
+                                }).filter(Objects::nonNull).collect(Collectors.toList()))
+                                .build());
+                    }
+                    // replace ops
+                    if (!CollectionUtil.isEmpty(mod.getValuesToReplace())) {
+                        memberOperations.add(new SCIMv2PatchOperation.Builder()
+                                .op(SCIMAttributeUtils.SCIM_REPLACE)
+                                .path(SCIMAttributeUtils.SCIM_GROUP_MEMBERS)
+                                .value(mod.getValuesToReplace().stream().map(vtr -> {
+                                    SCIMv2User user = client.getUser(vtr.toString());
+                                    BaseResourceReference resRef = null;
+                                    if (user == null) {
+                                        LOG.error(
+                                                "Unable to replace member {0} on the group, user does not exist", vtr);
+                                    } else {
+                                        resRef = new BaseResourceReference.Builder()
+                                                .value(user.getId())
+                                                .ref(configuration.getBaseAddress() + "Users/" + user.getId())
+                                                .display(user.getDisplayName())
+                                                .type("User")
+                                                .build();
+                                    }
+                                    return resRef;
+                                }).filter(Objects::nonNull).collect(Collectors.toList()))
+                                .build());
+                    }
+                });
+
+        // new synthetic group_member attribute: IDs are treated as nested group members
+        modifications.stream()
+                .filter(mod -> SCIMAttributeUtils.SCIM_GROUP_GROUP_MEMBERS.equalsIgnoreCase(mod.getName()))
+                .findFirst().ifPresent(mod -> {
+                    // remove ops
+                    if (!CollectionUtil.isEmpty(mod.getValuesToRemove())) {
+                        memberOperations.add(new SCIMv2PatchOperation.Builder()
+                                .op(SCIMAttributeUtils.SCIM_REMOVE)
+                                .path(buildFilteredPath(
+                                        SCIMAttributeUtils.SCIM_GROUP_MEMBERS,
+                                        null,
+                                        mod.getValuesToRemove(),
+                                        "or",
+                                        "eq"))
+                                .build());
+                    }
+                    // add ops
+                    if (!CollectionUtil.isEmpty(mod.getValuesToAdd())) {
+                        memberOperations.add(new SCIMv2PatchOperation.Builder()
+                                .op(SCIMAttributeUtils.SCIM_ADD)
+                                .path(SCIMAttributeUtils.SCIM_GROUP_MEMBERS)
+                                .value(mod.getValuesToAdd().stream().map(vta -> {
+                                    SCIMv2Group group = client.getGroup(vta.toString());
+                                    BaseResourceReference resRef = null;
+                                    if (group == null) {
+                                        LOG.error("Unable to add member group {0} to the group, group does not exist",
+                                                vta);
+                                    } else {
+                                        resRef = new BaseResourceReference.Builder()
+                                                .value(group.getId())
+                                                .ref(configuration.getBaseAddress() + "Groups/" + group.getId())
+                                                .display(group.getDisplayName())
+                                                .type("Group")
+                                                .build();
+                                    }
+                                    return resRef;
+                                }).filter(Objects::nonNull).collect(Collectors.toList()))
+                                .build());
+                    }
+                    // replace ops
+                    if (!CollectionUtil.isEmpty(mod.getValuesToReplace())) {
+                        memberOperations.add(new SCIMv2PatchOperation.Builder()
+                                .op(SCIMAttributeUtils.SCIM_REPLACE)
+                                .path(SCIMAttributeUtils.SCIM_GROUP_MEMBERS)
+                                .value(mod.getValuesToReplace().stream().map(vtr -> {
+                                    SCIMv2Group group = client.getGroup(vtr.toString());
+                                    BaseResourceReference resRef = null;
+                                    if (group == null) {
+                                        LOG.error(
+                                                "Unable to replace member group {0} on the group, group does not exist",
+                                                vtr);
+                                    } else {
+                                        resRef = new BaseResourceReference.Builder()
+                                                .value(group.getId())
+                                                .ref(configuration.getBaseAddress() + "Groups/" + group.getId())
+                                                .display(group.getDisplayName())
+                                                .type("Group")
+                                                .build();
+                                    }
+                                    return resRef;
+                                }).filter(Objects::nonNull).collect(Collectors.toList()))
+                                .build());
+                    }
+                });
+
         patch.getOperations().addAll(memberOperations);
         return patch;
     }

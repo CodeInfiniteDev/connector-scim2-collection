@@ -27,23 +27,23 @@ public class ResourceReference extends BaseResourceReference {
 
     }
 
-    private ReferenceType type;
+    private ReferenceType referenceType;
 
-    public ReferenceType getType() {
-        return type;
+    public ReferenceType getReferenceType() {
+        return referenceType;
     }
 
-    public void setType(final ReferenceType type) {
-        this.type = type;
+    public void setReferenceType(final ReferenceType referenceType) {
+        this.referenceType = referenceType;
     }
 
     @Override
     public String toString() {
         return "ResourceReference{"
-                + "type=" + type
-                + ", value=" + value
-                + ", $ref=" + ref
-                + ", display=" + display
+                + "referenceType=" + referenceType
+                + ", value=" + getValue()
+                + ", $ref=" + getRef()
+                + ", display=" + getDisplay()
                 + '}';
     }
 }

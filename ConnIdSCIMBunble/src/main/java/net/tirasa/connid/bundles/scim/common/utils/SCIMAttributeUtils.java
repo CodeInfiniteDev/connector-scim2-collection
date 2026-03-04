@@ -28,16 +28,7 @@ import net.tirasa.connid.bundles.scim.v2.dto.SCIMv2Attribute;
 import net.tirasa.connid.bundles.scim.v2.dto.SCIMv2EnterpriseUser;
 import org.identityconnectors.common.StringUtil;
 import org.identityconnectors.common.logging.Log;
-import org.identityconnectors.framework.common.objects.Attribute;
-import org.identityconnectors.framework.common.objects.AttributeBuilder;
-import org.identityconnectors.framework.common.objects.AttributeInfoBuilder;
-import org.identityconnectors.framework.common.objects.Name;
-import org.identityconnectors.framework.common.objects.ObjectClass;
-import org.identityconnectors.framework.common.objects.ObjectClassInfo;
-import org.identityconnectors.framework.common.objects.ObjectClassInfoBuilder;
-import org.identityconnectors.framework.common.objects.OperationalAttributeInfos;
-import org.identityconnectors.framework.common.objects.Schema;
-import org.identityconnectors.framework.common.objects.SchemaBuilder;
+import org.identityconnectors.framework.common.objects.*;
 
 public final class SCIMAttributeUtils {
 
@@ -122,6 +113,10 @@ public final class SCIMAttributeUtils {
     public static final String SCIM_GROUP_DISPLAY_NAME = "displayName";
 
     public static final String SCIM_GROUP_MEMBERS = "members";
+
+    public static final String SCIM_GROUP_USER_MEMBERS = "user_member";
+
+    public static final String SCIM_GROUP_GROUP_MEMBERS = "group_member";
 
     public static <T extends SCIMBaseAttribute<T>> Schema buildSchema(
             final String customAttributes,
@@ -341,13 +336,15 @@ public final class SCIMAttributeUtils {
         LOG.ok("SCHEMA: building GROUP object class");
         groupBuilder.addAttributeInfo(
                 AttributeInfoBuilder.define(SCIMAttributeUtils.SCIM_GROUP_DISPLAY_NAME).setMultiValued(false).build());
-        LOG.ok("SCHEMA: adding group attr '{0}' type={1} multi={2} required={3}",
-                SCIMAttributeUtils.SCIM_GROUP_DISPLAY_NAME, String.class.getSimpleName(), false, false);
-        LOG.ok("SCHEMA: members attribute skipped for {0}, reason={1}",
-                ObjectClass.GROUP_NAME, "complex attribute not explicitly defined in static schema");
+        groupBuilder.addAttributeInfo(
+                AttributeInfoBuilder.define(SCIMAttributeUtils.SCIM_GROUP_MEMBERS).setMultiValued(true).build());
+        groupBuilder.addAttributeInfo(
+                AttributeInfoBuilder.define(SCIM_GROUP_USER_MEMBERS).setMultiValued(true).build());
+        groupBuilder.addAttributeInfo(
+                AttributeInfoBuilder.define(SCIM_GROUP_GROUP_MEMBERS).setMultiValued(true).build());
         ObjectClassInfo group = groupBuilder.build();
         LOG.ok("SCHEMA group attrs: {0} membersPresent={1}",
-                group.getAttributeInfo().stream().map(attr -> attr.getName()).collect(java.util.stream.Collectors.toList()),
+                group.getAttributeInfo().stream().map(AttributeInfo::getName).collect(java.util.stream.Collectors.toList()),
                 group.getAttributeInfo().stream().anyMatch(attr ->
                 SCIMAttributeUtils.SCIM_GROUP_MEMBERS.equals(attr.getName())));
         builder.defineObjectClass(group);

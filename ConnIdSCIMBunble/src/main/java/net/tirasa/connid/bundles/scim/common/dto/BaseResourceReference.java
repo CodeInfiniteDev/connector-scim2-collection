@@ -43,6 +43,11 @@ public class BaseResourceReference implements Serializable {
             return this;
         }
 
+        public Builder type(final String type) {
+            instance.setType(type);
+            return this;
+        }
+
         public BaseResourceReference build() {
             return instance;
         }
@@ -54,6 +59,8 @@ public class BaseResourceReference implements Serializable {
     protected String ref;
 
     protected String display;
+
+    protected String type;
 
     public String getValue() {
         return value;
@@ -79,12 +86,21 @@ public class BaseResourceReference implements Serializable {
         this.display = display;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "BaseResourceReference{"
                 + "value=" + value
                 + ", $ref=" + ref
                 + ", display=" + display
+                + ", type=" + type
                 + '}';
     }
 }

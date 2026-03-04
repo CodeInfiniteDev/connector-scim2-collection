@@ -26,6 +26,7 @@ import net.tirasa.connid.bundles.scim.common.utils.SCIMAttributeUtils;
 import net.tirasa.connid.bundles.scim.common.utils.SCIMUtils;
 import org.identityconnectors.common.CollectionUtil;
 import org.identityconnectors.framework.common.objects.Attribute;
+import org.identityconnectors.framework.common.objects.AttributeBuilder;
 
 public class AbstractSCIMGroup<MT extends SCIMBaseMeta> extends AbstractSCIMBaseResource<MT> implements SCIMGroup<MT> {
 
@@ -93,9 +94,48 @@ public class AbstractSCIMGroup<MT extends SCIMBaseMeta> extends AbstractSCIMBase
                     }
                 }
             } catch (IllegalAccessException e) {
-                LOG.error(e, "Unable to build user attributes by reflection");
+                LOG.error(e, "Unable to build group attributes by reflection");
             }
         });
+
+        // expose synthetic attributes for user and group members based on SCIM members list
+        if (!members.isEmpty()) {
+            List<String> userMemberIds = new ArrayList<>();
+            List<String> groupMemberIds = new ArrayList<>();
+
+            for (BaseResourceReference member : members) {
+                if (member == null || member.getValue() == null) {
+                    continue;
+                }
+                String id = member.getValue();
+
+                String resolvedType = member.getType();
+                if (resolvedType == null && member.getRef() != null) {
+                    String ref = member.getRef();
+                    if (ref.contains("/Groups/")) {
+                        resolvedType = "Group";
+                    } else if (ref.contains("/Users/")) {
+                        resolvedType = "User";
+                    }
+                }
+
+                if ("Group".equalsIgnoreCase(resolvedType)) {
+                    groupMemberIds.add(id);
+                } else if ("User".equalsIgnoreCase(resolvedType)) {
+                    userMemberIds.add(id);
+                } else {
+                    // fallback: if type is unknown, consider it as user to not lose information
+                    userMemberIds.add(id);
+                }
+            }
+
+            if (!userMemberIds.isEmpty()) {
+                attrs.add(AttributeBuilder.build(SCIMAttributeUtils.SCIM_GROUP_USER_MEMBERS, userMemberIds));
+            }
+            if (!groupMemberIds.isEmpty()) {
+                attrs.add(AttributeBuilder.build(SCIMAttributeUtils.SCIM_GROUP_GROUP_MEMBERS, groupMemberIds));
+            }
+        }
 
         return attrs;
     }
